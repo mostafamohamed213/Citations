@@ -11,6 +11,7 @@ namespace Citations.Models
         {
             ArticleAuthores = new HashSet<ArticleAuthore>();
             ArticleIssues = new HashSet<ArticleIssue>();
+            ArticlesKeywords = new HashSet<ArticlesKeyword>();
         }
 
         public int Articleid { get; set; }
@@ -23,5 +24,6 @@ namespace Citations.Models
 
         public virtual ICollection<ArticleAuthore> ArticleAuthores { get; set; }
         public virtual ICollection<ArticleIssue> ArticleIssues { get; set; }
+        public virtual ICollection<ArticlesKeyword> ArticlesKeywords { get; set; }
     }
 }

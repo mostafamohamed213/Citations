@@ -20,13 +20,17 @@ namespace Citations.Models
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<ArticleAuthore> ArticleAuthores { get; set; }
         public virtual DbSet<ArticleIssue> ArticleIssues { get; set; }
+        public virtual DbSet<ArticlesKeyword> ArticlesKeywords { get; set; }
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<AuthorResearchField> AuthorResearchFields { get; set; }
+        public virtual DbSet<AuthorsPositionInstitution> AuthorsPositionInstitutions { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
+        public virtual DbSet<KeyWord> KeyWords { get; set; }
         public virtual DbSet<Magazine> Magazines { get; set; }
         public virtual DbSet<MagazineIssue> MagazineIssues { get; set; }
         public virtual DbSet<MagazineResearchField> MagazineResearchFields { get; set; }
+        public virtual DbSet<PositionJob> PositionJobs { get; set; }
         public virtual DbSet<Publisher> Publishers { get; set; }
         public virtual DbSet<ResearchField> ResearchFields { get; set; }
 
@@ -117,6 +121,30 @@ namespace Citations.Models
                     .HasConstraintName("article_issue_magazine_issue_id_fkey");
             });
 
+            modelBuilder.Entity<ArticlesKeyword>(entity =>
+            {
+                entity.HasKey(e => new { e.Articleid, e.KeyWordid })
+                    .HasName("articles_keywords_pkey");
+
+                entity.ToTable("articles_keywords", "core");
+
+                entity.Property(e => e.Articleid).HasColumnName("articleid");
+
+                entity.Property(e => e.KeyWordid).HasColumnName("key_wordid");
+
+                entity.HasOne(d => d.Article)
+                    .WithMany(p => p.ArticlesKeywords)
+                    .HasForeignKey(d => d.Articleid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("articles_keywords_articleid_fkey");
+
+                entity.HasOne(d => d.KeyWord)
+                    .WithMany(p => p.ArticlesKeywords)
+                    .HasForeignKey(d => d.KeyWordid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("articles_keywords_key_wordid_fkey");
+            });
+
             modelBuilder.Entity<Author>(entity =>
             {
                 entity.ToTable("authors", "core");
@@ -163,6 +191,41 @@ namespace Citations.Models
                     .HasForeignKey(d => d.Fieldid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("author_research_fields_fieldid_fkey");
+            });
+
+            modelBuilder.Entity<AuthorsPositionInstitution>(entity =>
+            {
+                entity.ToTable("authors_position_institution", "core");
+
+                entity.Property(e => e.AuthorsPositionInstitutionId)
+                    .HasColumnName("authors_position_institution_id")
+                    .HasDefaultValueSql("nextval('core.authors_position_institution_authors_position_institution_i_seq'::regclass)");
+
+                entity.Property(e => e.Authorid).HasColumnName("authorid");
+
+                entity.Property(e => e.Institutionid).HasColumnName("institutionid");
+
+                entity.Property(e => e.MainIntitute).HasColumnName("main_intitute");
+
+                entity.Property(e => e.PositionJobid).HasColumnName("position_jobid");
+
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.AuthorsPositionInstitutions)
+                    .HasForeignKey(d => d.Authorid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("authors_position_institution_authorid_fkey");
+
+                entity.HasOne(d => d.Institution)
+                    .WithMany(p => p.AuthorsPositionInstitutions)
+                    .HasForeignKey(d => d.Institutionid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("authors_position_institution_institutionid_fkey");
+
+                entity.HasOne(d => d.PositionJob)
+                    .WithMany(p => p.AuthorsPositionInstitutions)
+                    .HasForeignKey(d => d.PositionJobid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("authors_position_institution_position_jobid_fkey");
             });
 
             modelBuilder.Entity<Country>(entity =>
@@ -217,6 +280,20 @@ namespace Citations.Models
                     .HasForeignKey(d => d.Country)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("institution_country_fkey");
+            });
+
+            modelBuilder.Entity<KeyWord>(entity =>
+            {
+                entity.ToTable("key_words", "core");
+
+                entity.Property(e => e.KeyWordid).HasColumnName("key_wordid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.KeyWord1)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("key_word");
             });
 
             modelBuilder.Entity<Magazine>(entity =>
@@ -314,6 +391,20 @@ namespace Citations.Models
                     .HasForeignKey(d => d.Magazineid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("magazine_research_fields_magazineid_fkey");
+            });
+
+            modelBuilder.Entity<PositionJob>(entity =>
+            {
+                entity.ToTable("position_job", "core");
+
+                entity.Property(e => e.PositionJobid).HasColumnName("position_jobid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.PositionJob1)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("position_job");
             });
 
             modelBuilder.Entity<Publisher>(entity =>

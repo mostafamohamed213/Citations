@@ -9,6 +9,7 @@ namespace Citations.Models
     {
         public Institution()
         {
+            AuthorsPositionInstitutions = new HashSet<AuthorsPositionInstitution>();
             Magazines = new HashSet<Magazine>();
         }
 
@@ -23,6 +24,7 @@ namespace Citations.Models
         public bool Active { get; set; }
 
         public virtual Country CountryNavigation { get; set; }
+        public virtual ICollection<AuthorsPositionInstitution> AuthorsPositionInstitutions { get; set; }
         public virtual ICollection<Magazine> Magazines { get; set; }
     }
 }

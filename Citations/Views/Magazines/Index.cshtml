@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Citations.Models.Magazine>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Magazines</h1>
+
+<p>
+    <a asp-action="Create">Add New Magazine</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isbn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImpactFactor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImmediateCoefficient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppropriateValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfCitations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Institution.Name)  
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isbn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImpactFactor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImmediateCoefficient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppropriateValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfCitations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Institution.Name)
+            </td>
+            <td>
+
+                <a asp-action="Edit" asp-route-id="@item.Magazineid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Magazineid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Magazineid">Delete</a> |
+                <a asp-action="AddResearchField" asp-route-id="@item.Magazineid">Add Research Fields</a> |
+                <a asp-action="DeleteResearchField" asp-route-id="@item.Magazineid">Delete Research Fields</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

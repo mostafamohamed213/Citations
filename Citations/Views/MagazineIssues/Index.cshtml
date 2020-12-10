@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Citations.Models.MagazineIssue>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Issuenumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfPublication)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Magazine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Issuenumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfPublication)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Magazine.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Issueid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Issueid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Issueid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

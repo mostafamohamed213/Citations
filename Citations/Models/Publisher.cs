@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace Citations.Models
         }
 
         public int Publisherid { get; set; }
+        [Display(Name = "إسم الناشر")]
         public string Name { get; set; }
         public int Country { get; set; }
         public string Address { get; set; }

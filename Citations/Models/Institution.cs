@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace Citations.Models
         }
 
         public int Institutionid { get; set; }
+        [Display(Name = "المؤسسة التعليمية")]
         public string Name { get; set; }
         public int Country { get; set; }
         public string ScannedCoverImage { get; set; }

@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {}
+    "C:\\Users\\T.R.X\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {
+    "C:\\Users\\T.R.X\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
+        "projectUniqueName": "C:\\Users\\T.R.X\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
         "projectName": "Citations",
-        "projectPath": "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
-        "packagesPath": "C:\\Users\\MostafaAli\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\obj\\",
+        "projectPath": "C:\\Users\\T.R.X\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
+        "packagesPath": "C:\\Users\\T.R.X\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\T.R.X\\Documents\\GitHub\\Citations\\Citations\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\MostafaAli\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\T.R.X\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -85,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

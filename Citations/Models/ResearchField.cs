@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -12,9 +13,11 @@ namespace Citations.Models
             AuthorResearchFields = new HashSet<AuthorResearchField>();
             MagazineResearchFields = new HashSet<MagazineResearchField>();
         }
-
+        [Display(Name = "م")]
         public int Fieldid { get; set; }
+        [Display(Name = "مجال البحث")]
         public string Name { get; set; }
+        [Display(Name = "نشط ؟")]
         public bool Active { get; set; }
 
         public virtual ICollection<AuthorResearchField> AuthorResearchFields { get; set; }

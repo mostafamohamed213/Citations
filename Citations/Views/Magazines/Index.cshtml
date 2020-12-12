@@ -71,8 +71,8 @@
                 <a asp-action="Edit" asp-route-id="@item.Magazineid">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Magazineid">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Magazineid">Delete</a> |
-                <a asp-action="AddResearchField" asp-route-id="@item.Magazineid">Add Research Fields</a> |
-                <a asp-action="DeleteResearchField" asp-route-id="@item.Magazineid">Delete Research Fields</a>
+                @*<a asp-action="AddResearchField" asp-route-id="@item.Magazineid">Add Research Fields</a> |*@
+                <a asp-action="Index" asp-controller="MagazineIssues" asp-route-id="@item.Magazineid">View Issues </a>
             </td>
         </tr>
 }

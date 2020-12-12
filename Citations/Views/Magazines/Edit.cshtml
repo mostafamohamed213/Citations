@@ -13,7 +13,9 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Magazineid" />
-            <div class="form-group">
+            <input type="hidden" asp-for="Name" />
+            <input type="hidden" asp-for="Isbn" />
+            @*<div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -22,7 +24,7 @@
                 <label asp-for="Isbn" class="control-label"></label>
                 <input asp-for="Isbn" class="form-control" />
                 <span asp-validation-for="Isbn" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="ImpactFactor" class="control-label"></label>
                 <input asp-for="ImpactFactor" class="form-control" />
@@ -53,14 +55,24 @@
                     <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
                 </label>
             </div>
-            <div class="form-group">
-                <label class="control-label">مجالات البحث</label>
+            @*<div class="form-group">
+            <label class="control-label">مجالات البحث</label>
+            <br />
+            @foreach (var item in ViewBag.ResearchFields)
+            {
+                <input type="checkbox" value="@item.Fieldid" name="Field" checked="true" /> @item.Name
                 <br />
-                @foreach (var item in ViewBag.ResearchFields)
-                {
-                    <input type="checkbox" value="@item.Fieldid" name="Field" checked="true" /> @item.Name
-                    <br />
-                }
+            }
+        </div>*@
+            <div class="form-group">
+
+                <label class="control-label">مجالات البحث</label>
+                @*Normal DropDown
+            @Html.DropDownListFor(model => model.SelectedEmployeeIDs, new SelectList(Model.EmployeeCollection, "EmployeeID", "Name"), new { id = "normalDropDown" })
+                *@
+                @*MultiSelect DropDown*@
+                <select asp-for="ResearchFields" asp-items="ViewBag.Fieldid" size="5" multiple="multiple" class="form-control" , new { id="multiSelectDropDown" }></select>
+                @*@Html.ListBoxFor(Model.ResearchFields, ViewBag.Fieldid, new { id = "multiSelectDropDown", multiple = "multiple" })*@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -75,4 +87,23 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery/dist/chosen.jquery.min.js"></script>
+    <script>
+        $(function () {
+            //normal dropdown
+            //$("#normalDropDown").chosen({
+            //    disable_search_threshold : 5
+            ////});
+
+            //multiselect DropDown
+            $("#multiSelectDropDown").chosen({
+                width: "100%"
+            });
+        });
+
+    </script>
+
 }

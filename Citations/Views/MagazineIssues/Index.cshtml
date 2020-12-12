@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>@ViewBag.magazineName</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.magazineId">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -44,11 +44,12 @@
                 @Html.DisplayFor(modelItem => item.Publisher.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Issueid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Issueid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Issueid">Delete</a>
+            
+                <a asp-action="Details" asp-route-id="@item.Issueid">Details</a>
+              
             </td>
         </tr>
 }
     </tbody>
 </table>
+<a asp-action="Index" asp-controller="Magazines">Back To Magazines</a>

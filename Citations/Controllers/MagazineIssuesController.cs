@@ -19,9 +19,13 @@ namespace Citations.Controllers
         }
 
         // GET: MagazineIssues
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var citationContext = _context.MagazineIssues.Include(m => m.Magazine).Include(m => m.Publisher);
+            Magazine magazine = await _context.Magazines.FirstOrDefaultAsync(a => a.Magazineid == id);
+            ViewBag.magazineName = magazine.Name;
+            ViewBag.magazineId = id;
+
+            var citationContext = _context.MagazineIssues.Where(a=>a.Magazineid==id).Include(m => m.Magazine).Include(m => m.Publisher);
             return View(await citationContext.ToListAsync());
         }
         /*CheckIssuenumber*/
@@ -46,9 +50,11 @@ namespace Citations.Controllers
         }
 
         // GET: MagazineIssues/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Name");
+            Magazine magazine = _context.Magazines.FirstOrDefault(a => a.Magazineid == id);
+            ViewBag.magazineName = magazine.Name;
+            ViewBag.magazineId = id;
             ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name");
             return View();
         }
@@ -58,13 +64,18 @@ namespace Citations.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Issueid,Issuenumber,Magazineid,Publisherid,DateOfPublication")] MagazineIssue magazineIssue)
+        public async Task<IActionResult> Create(int id,[Bind("Issueid,Issuenumber,Magazineid,Publisherid,DateOfPublication")] MagazineIssue magazineIssue)
         {
+           
             if (ModelState.IsValid)
             {
                 _context.Add(magazineIssue);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),"MagazineIssues", new
+                {
+                    id = magazineIssue.Magazineid
+                   
+                });
             }
             ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Name", magazineIssue.Magazineid);
             ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name", magazineIssue.Publisherid);

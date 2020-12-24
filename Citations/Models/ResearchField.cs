@@ -15,6 +15,7 @@ namespace Citations.Models
 
         public int Fieldid { get; set; }
         public string Name { get; set; }
+        public string NameEn { get; set; }
         public bool Active { get; set; }
 
         public virtual ICollection<AuthorResearchField> AuthorResearchFields { get; set; }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {}
+    "C:\\Users\\ShamsMousa\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {
+    "C:\\Users\\ShamsMousa\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
+        "projectUniqueName": "C:\\Users\\ShamsMousa\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
         "projectName": "Citations",
-        "projectPath": "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
-        "packagesPath": "C:\\Users\\MostafaAli\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MostafaAli\\Documents\\GitHub\\Citations\\Citations\\obj\\",
+        "projectPath": "C:\\Users\\ShamsMousa\\Documents\\GitHub\\Citations\\Citations\\Citations.csproj",
+        "packagesPath": "C:\\Users\\ShamsMousa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ShamsMousa\\Documents\\GitHub\\Citations\\Citations\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\MostafaAli\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ShamsMousa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,6 +38,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

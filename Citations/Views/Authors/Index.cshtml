@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Citations.Models.Author>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              الاسم
+            </th>
+           
+           
+            <th>
+                @Html.DisplayNameFor(model => model.PointerH)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        
+            <tr id="tr_@item.Authorid" >
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PointerH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Authorid" class="fa fa-edit" title="Edit"></a> |
+                    <a asp-action="Details" asp-route-id="@item.Authorid" class="fa fa-eye" title="Details"></a> |
+                    <a href="javascript:void(0)" class="fa fa-trash" title="Delete" onclick="confirmdelete(@item.Authorid)"></a>|
+                    <a asp-action="Index" asp-controller="AuthorResearchFields" asp-route-id="@item.Authorid"  class="fa fa-book" title="researchfields"></a>
+                </td>
+
+            </tr>
+      
+        }
+    </tbody>
+</table>
+<script>
+    function confirmdelete(Authorid) {
+
+        Swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+
+
+        }).then((result) => {
+          
+
+            if (result.value == true) {
+                $.ajax({
+
+                    type: 'POST',
+                    url: '/Authors/Delete/' + JSON.stringify( Authorid),
+                    data: {  Authorid },
+                    contentType: 'application/json',
+                    datatype: "json",
+                    
+                   
+                    success: function (response) {
+
+                        var id = 'tr_' + Authorid ;
+                        var tr = document.getElementById(id);
+                        tr.remove();
+                        Swal({
+                            title: "Deleted",
+                            text: "Done!",
+                            type: 'success'
+                        })
+
+                    },
+                    error: function (err, result) {
+                        alert("Error in delete" + err.responseText);
+                    }
+                })
+
+
+            }
+
+        })
+    }
+</script>

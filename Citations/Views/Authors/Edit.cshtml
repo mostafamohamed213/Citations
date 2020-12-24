@@ -1,0 +1,378 @@
+﻿@model Citations.Models.Author
+
+
+
+@{
+
+    SelectList pjs = (SelectList)ViewBag.PositionJobid;
+
+
+
+    List<PositionJob> positions = new List<PositionJob>();
+    foreach (var item in pjs)
+    {
+        positions.Add(new PositionJob() { PositionJobid = int.Parse(item.Value), PositionJob1 = item.Text, });
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" style="color:red"></div>
+            <input type="hidden" asp-for="Authorid" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" style="color:red"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AuthorBio" class="control-label"></label>
+                <input asp-for="AuthorBio" class="form-control" />
+                <span asp-validation-for="AuthorBio" style="color:red"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PointerH" class="control-label"></label>
+                <input asp-for="PointerH" class="form-control" />
+                <span asp-validation-for="PointerH" style="color:red"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScannedAuthorimage" class="control-label"></label>
+                <input asp-for="ScannedAuthorimage" class="form-control" type="file" />
+                <span asp-validation-for="ScannedAuthorimage" style="color:red"></span>
+                <img src="/AutherImages/@Model.ScannedAuthorimage" alt="Avatar" id="imgprf" class="img-circle" style="width:100px;height:100px" />
+
+            </div>
+            <div class="form-group">
+                <div class="demo">
+                    <label class="control-label"> مجالات البحث</label>
+                    <select name="ResarchFields" class="form-control" asp-items="ViewBag.Fieldid" multiple style="display:none" required></select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label"> @Html.DisplayName("المؤسسة التعليمية")</label>
+                @*<div class="inst ">
+
+                <select class="form-control" asp-items="ViewBag.Institutionid" multiple style="display:none"></select>
+            </div>*@
+                @{
+                    IEnumerable<Institution> Institutions = (IEnumerable<Institution>)ViewBag.Institutions;
+                    IEnumerable<AuthorsPositionInstitution> autherposithininstitute = (IEnumerable<AuthorsPositionInstitution>)ViewBag.autherposithininstitute;
+                    List<AuthorsPositionInstitution> autherposithininstitutelist = autherposithininstitute.ToList();
+                }
+
+
+
+                <table class="table" cellspacing="0" cellpadding="1">
+                    <thead>
+                        <tr>
+                            <th>
+                                الاسم
+                            </th>
+
+
+
+                            <th>
+                                اختار
+                            </th>
+                            <th>  المؤسسة الرئيسية</th>
+                            <th>  الموقع الوظيفي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Institutions)
+                        {
+
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+
+                                @{
+                                    var editedapi = autherposithininstitutelist.FirstOrDefault(api => api.Institutionid == item.Institutionid);
+                                    if (editedapi != null)
+                                    {
+                                        <td>
+                                            <input type="checkbox" name="institutions" id="Chk_@item.Institutionid" checked onchange="checkboxchanged(this)" value="@item.Institutionid" />
+
+                                        </td>
+                                        <td>
+                                            @if (editedapi.MainIntitute == true)
+                                            {
+
+                                                <input type="radio" name="MainInstitute" checked="checked" id="@item.Institutionid" onchange="radiochang(this)" value="@item.Institutionid" required title="اختر مؤسسة" />
+
+                                            }
+                                            else
+                                            {
+
+                                                <input type="radio" name="MainInstitute" id="@item.Institutionid" onchange="radiochang(this)" value="@item.Institutionid" required title="اختر مؤسسة" />
+
+                                            }
+                                        </td>
+                                        <td>
+
+                                            <select class="form-control" name="positionjob" id="ddl_@item.Institutionid" required="required" title="اختر موقع وظيفي">
+
+                                                <option value="">أختر</option>
+                                                @foreach (var posjob in pjs)
+                                                {
+                                                    if (posjob.Value == editedapi.PositionJobid.ToString())
+                                                    {
+                                                        <option value="@posjob.Value _inst_@item.Institutionid" selected="selected"> @posjob.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@posjob.Value _inst_@item.Institutionid"> @posjob.Text</option>
+                                                    }
+
+                                                }
+                                            </select>
+
+
+
+                                        </td>
+                                    }
+
+
+
+
+                                    else
+                                    {
+
+
+                                        <td>
+
+                                            <input type="checkbox" name="institutions" id="Chk_@item.Institutionid" onchange="checkboxchanged(this)" value="@item.Institutionid" />
+
+
+                                        </td>
+                                        <td>
+                                            <input type="radio" name="MainInstitute" id="@item.Institutionid" onchange="radiochang(this)" value="@item.Institutionid" required title="المؤسسة الرئيسية" />
+                                        </td>
+                                        <td>
+
+                                            <select class="form-control" name="positionjob" disabled id="ddl_@item.Institutionid" required="required" title="اختر موقع وظيفي">
+
+                                                <option value="">أختر</option>
+                                                @foreach (var posjob in pjs)
+                                                {
+                                                    <option value="@posjob.Value _inst_@item.Institutionid"> @posjob.Text</option>
+                                                }
+                                            </select>
+
+
+
+                                        </td>
+                                    }
+                                }
+
+
+
+
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+
+
+            <div class="form-group">
+
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+
+<link href="~/Searchable-Multi-select-jQuery-Dropdown/jquery.dropdown.css" rel="stylesheet" />
+
+<script src="~/Searchable-Multi-select-jQuery-Dropdown/jquery.dropdown.js"></script>
+<script>
+    function checkboxchanged(c) {
+        //alert("ddl_" + c.value);
+        if (c.checked == true) {
+            document.getElementById("ddl_" + c.value).disabled = false;
+            document.getElementById("ddl_" + c.value).required = true;
+
+        }
+        if (c.checked == false) {
+            document.getElementById("ddl_" + c.value).selectedIndex = 0;
+            document.getElementById("ddl_" + c.value).setAttribute("disabled", "true");
+
+        }
+
+
+    }
+    function radiochang(c) {
+        document.getElementById("Chk_" + c.value).checked = true;
+
+
+
+        var _chks = document.getElementsByTagName("INPUT");
+        var _numChks = _chks.length - 1;
+
+        for (var i = 0; i <= _numChks; i++) {
+            _type = _chks[i].getAttribute("type");
+
+            if (_type == "checkbox")
+                _chks[i].disabled = false;
+
+        }
+
+
+
+        checkboxchanged(c);
+        document.getElementById("Chk_" + c.value).setAttribute("disabled", "true");
+
+
+
+    }
+    $(document).ready(function () {
+
+        $.noConflict();
+        $('.table').DataTable({
+            //"scrollX": true,
+            columnDefs: [
+                {
+                    //className: "dt-right", "targets": "_all",
+                    // className: 'dt-head-right', targets: "_all",
+
+                }
+
+            ],
+            "scrollY": "200px",
+            "scrollCollapse": true,
+            "fixedHeader": true,
+            "bFilter": false,
+            "bPaginate": false,
+            "stateSave": true,
+            "pagingType": "full_numbers",
+            "bInfo": false,
+            "oLanguage": {
+                "sSearch": "بحث:"
+            }
+        });
+    })
+
+
+    $('.demo').dropdown({
+        multipleMode: 'label',
+        input: '<input type="text" maxLength="20" placeholder="ابحث">',
+        searchNoData: '<li style="color:red">No Results</li>',
+        includeSelectAllOption: true,
+        choice: function (val) {
+
+        },
+        minCount: 1,
+
+        minCountErrorMessage: ' Required At least 1 field',
+
+
+
+    });
+    $('.pos').dropdown({
+        multipleMode: 'label',
+        input: '<input type="text" maxLength="20" placeholder="ابحث">',
+        searchNoData: '<li style="color:red">No Results</li>',
+        includeSelectAllOption: true,
+        choice: function (val) { },
+        minCount: 1,
+
+
+
+    });
+    $('.inst').dropdown({
+        multipleMode: 'label',
+        input: '<input type="text" maxLength="20" placeholder="ابحث">',
+        searchNoData: '<li style="color:red">No Results</li>',
+        includeSelectAllOption: true,
+        minCount: 1,
+        choice: function (val, aa) {
+            //for (var i in val) {
+            //    alert(i + "=" + val[i]);
+            //}
+            if (aa) {
+
+                if (aa.selected == true) {
+                    var div = document.createElement("div");
+                    div.setAttribute("id", "divrd_" + aa.id);
+                    div.style.display = 'inline-block';
+                    var xs = document.createElement("label");
+
+                    xs.setAttribute("name", "radio");
+                    xs.setAttribute("value", "1");
+                    xs.innerHTML = aa.name;
+                    var x = document.createElement("INPUT");
+                    x.setAttribute("type", "radio");
+                    x.setAttribute("name", "maininstitute");
+                    x.setAttribute("value", aa.id);
+                    x.setAttribute("id", aa.id);
+
+                    div.appendChild(x);
+                    div.appendChild(xs);
+                    document.getElementsByClassName("maininstituationtoradio")[0].appendChild(div);
+
+                }
+                if (aa.selected == false) {
+                    document.getElementById("divrd_" + aa.id).remove();
+
+                }
+            }
+        },
+
+
+
+    });
+
+
+    function selectedinstitution(selected) {
+        alert(selected.options.selectedIndex);
+    }
+    $('table').on('click', 'tr.parent .fa-chevron-down', function () {
+        $(this).closest('tbody').toggleClass('open');
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgprf').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+    }
+
+    $("#ScannedAuthorimage").change(function () {
+        readURL(this);
+    });
+
+
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

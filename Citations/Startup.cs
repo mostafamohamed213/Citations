@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Citations.Models;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,11 @@ namespace Citations
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            
             services.AddDbContext<CitationContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("Citations")));
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

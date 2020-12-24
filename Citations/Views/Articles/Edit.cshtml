@@ -11,32 +11,32 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" style="color:red"></div>
             <input type="hidden" asp-for="Articleid" />
             <div class="form-group">
                 <label asp-for="Articletittle" class="control-label"></label>
                 <input asp-for="Articletittle" class="form-control" />
-                <span asp-validation-for="Articletittle" class="text-danger"></span>
+                <span asp-validation-for="Articletittle" style="color:red"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ScannedArticlePdf" class="control-label"></label>
                 <input asp-for="ScannedArticlePdf" class="form-control" />
-                <span asp-validation-for="ScannedArticlePdf" class="text-danger"></span>
+                <span asp-validation-for="ScannedArticlePdf" style="color:red"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ScannedBriefQuote" class="control-label"></label>
                 <input asp-for="ScannedBriefQuote" class="form-control" />
-                <span asp-validation-for="ScannedBriefQuote" class="text-danger"></span>
+                <span asp-validation-for="ScannedBriefQuote" style="color:red"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfCitations" class="control-label"></label>
                 <input asp-for="NumberOfCitations" class="form-control" />
-                <span asp-validation-for="NumberOfCitations" class="text-danger"></span>
+                <span asp-validation-for="NumberOfCitations" style="color:red"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfReferences" class="control-label"></label>
                 <input asp-for="NumberOfReferences" class="form-control" />
-                <span asp-validation-for="NumberOfReferences" class="text-danger"></span>
+                <span asp-validation-for="NumberOfReferences" style="color:red"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">

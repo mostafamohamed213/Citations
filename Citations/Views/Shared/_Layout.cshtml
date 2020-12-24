@@ -4,8 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Citations</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="~/fontawesome/css/all.css" rel="stylesheet" />
+
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    @*<link href="~/lib/bootstrap/bootstrap-rtl.css" rel="stylesheet" />*@
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/site.css" />
+
+    @*<link href="~/css/main.css" rel="stylesheet" />*@
+
+  
+    <script src="~/js/js/sweetalert.js"></script>
+    <link href="~/css/sweetalert.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -19,10 +34,27 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Index">Author</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ArticleAuthores" asp-action="index">ArticleAuthore</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="index">Article</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AuthorResearchFields" asp-action="index">AuthorResearchField</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AuthorsPositionInstitutions" asp-action="index">AuthorsPositionInstitution</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PositionJobs" asp-action="index">PositionJob</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Publishers" asp-action="index">Publisher</a>
+                        </li>  <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TypeOfPublishers" asp-action="index">Types</a>
                         </li>
                     </ul>
                 </div>
@@ -35,14 +67,42 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - Citations - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+@*<link rel="stylesheet" href="~/tenderAssets/css/bootstrap-rtl.css">*@
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $.noConflict();
+        $('.table').DataTable({
+            //"scrollX": true,
+            columnDefs: [
+                {
+                    className: "dt-right", "targets": "_all",
+                   // className: 'dt-head-right', targets: "_all",
+                   
+                }
+
+            ],
+            "stateSave": true,
+            "pagingType": "full_numbers",
+            "oLanguage": {
+                "sSearch": "بحث:"
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,93 @@
+﻿@model Citations.Models.Publisher
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Publisher</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" style="color:red"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" style="color:red"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <select asp-for="Country" class="form-control" asp-items="ViewBag.Country"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" style="color:red"></span>
+            </div>
+            <div class="form-group row">
+                <div style="width:50%">
+                    <label asp-for="TypeOfPublisher" class="control-label"></label>
+                    <select asp-for="TypeOfPublisher" class="form-control" onchange="changetype(this)" asp-items="ViewBag.TypeOfPublisher">
+
+                        
+                        <option> مؤسسة</option>
+
+
+                    </select>
+                    </div >
+                    <div style="width:50% ;" id="instit" >
+                        <label asp-for="Institutionid" class="control-label"></label>
+                        <select asp-for="Institutionid" class="form-control" asp-items="ViewBag.Institutions">
+                            <option> اختر</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" >
+
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+</form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script>
+  
+
+    function changetype(id) {
+        var cacheDom = document.getElementById('instit');
+        if (id.options[id.selectedIndex].text !='مؤسسة') {
+
+           
+           
+             
+           
+           
+            document.getElementById('instit').style.display = "none";
+            
+
+        } else {
+          
+         
+            document.getElementById('instit').style.display = "block";
+        }
+
+    }
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

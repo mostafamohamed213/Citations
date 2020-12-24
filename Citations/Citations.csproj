@@ -5,6 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models - Copy\**" />
+    <Compile Remove="Views\ArticleAuthores\**" />
+    <Compile Remove="Views\ArticleIssues\**" />
+    <Compile Remove="Views\Articles\**" />
+    <Content Remove="Models - Copy\**" />
+    <Content Remove="Views\ArticleAuthores\**" />
+    <Content Remove="Views\ArticleIssues\**" />
+    <Content Remove="Views\Articles\**" />
+    <EmbeddedResource Remove="Models - Copy\**" />
+    <EmbeddedResource Remove="Views\ArticleAuthores\**" />
+    <EmbeddedResource Remove="Views\ArticleIssues\**" />
+    <EmbeddedResource Remove="Views\Articles\**" />
+    <None Remove="Models - Copy\**" />
+    <None Remove="Views\ArticleAuthores\**" />
+    <None Remove="Views\ArticleIssues\**" />
+    <None Remove="Views\Articles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +38,17 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\CODE_OF_CONDUCT.md" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\FUNDING.yml" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\ISSUE_TEMPLATE\01_bug_report.md" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\ISSUE_TEMPLATE\02_feature_request.md" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\ISSUE_TEMPLATE\03_question.md" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\workflows\ci.yml" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\workflows\coverage.yml" />
+    <None Include="wwwroot\sweetalert2-10.12.5\.github\workflows\cron.yml" />
   </ItemGroup>
 
 </Project>

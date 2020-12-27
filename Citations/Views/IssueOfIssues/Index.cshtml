@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Citations.Models.IssueOfIssue>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>العدد @ViewBag.Issuenumber </h2>
+
+<p>
+    <a asp-action="Create" asp-route-id="@ViewBag.Issueid">إضافة إصدار</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IssuenumberOfIssue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfPublication)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MagazineIssue.Issuenumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IssuenumberOfIssue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfPublication)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MagazineIssue.Issuenumber)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IssueOfIssueid">تعديل</a> |
+                    <a asp-action="Details" asp-route-id="@item.IssueOfIssueid">تفاصيل</a> 
+                    @*<a asp-action="Delete" asp-route-id="@item.IssueOfIssueid">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Index" asp-controller="MagazineIssues" asp-route-id="@ViewBag.magazineid">العودة للإصدارات</a> 

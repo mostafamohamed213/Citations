@@ -4,7 +4,8 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Research Field Details</h1>
+<h1>تفاصيل مجال البحث</h1>
+<h1>@Model.Name</h1>
 
 <div>
     
@@ -25,6 +26,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Fieldid">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Fieldid">تعديل</a> |
+    <a asp-action="Index">عودة لمجالات البحث</a>
 </div>

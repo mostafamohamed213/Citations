@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Research Fields</h1>
+<h1>مجالات البحث</h1>
 
 <p>
-    <a asp-action="Create">Add Research Field</a>
+    <a asp-action="Create">إضافة مجال بحث جديد</a>
 </p>
 <table class="table">
     <thead>
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Active)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Fieldid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Fieldid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Fieldid">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Fieldid">تعديل</a> |
+                <a asp-action="Details" asp-route-id="@item.Fieldid">تفاصيل</a> 
+                @*<a asp-action="Delete" asp-route-id="@item.Fieldid">ح</a>*@
             </td>
         </tr>
 }

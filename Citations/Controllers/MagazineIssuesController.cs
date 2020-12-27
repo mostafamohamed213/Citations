@@ -25,7 +25,7 @@ namespace Citations.Controllers
             ViewBag.magazineName = magazine.Name;
             ViewBag.magazineId = id;
 
-            var citationContext = _context.MagazineIssues.Where(a=>a.Magazineid==id).Include(m => m.Magazine).Include(m => m.Publisher);
+            var citationContext = _context.MagazineIssues.Where(a=>a.Magazineid==id).Include(m => m.Magazine);
             return View(await citationContext.ToListAsync());
         }
         /*CheckIssuenumber*/
@@ -39,13 +39,11 @@ namespace Citations.Controllers
 
             var magazineIssue = await _context.MagazineIssues
                 .Include(m => m.Magazine)
-                .Include(m => m.Publisher)
                 .FirstOrDefaultAsync(m => m.Issueid == id);
             if (magazineIssue == null)
             {
                 return NotFound();
             }
-
             return View(magazineIssue);
         }
 
@@ -55,7 +53,6 @@ namespace Citations.Controllers
             Magazine magazine = _context.Magazines.FirstOrDefault(a => a.Magazineid == id);
             ViewBag.magazineName = magazine.Name;
             ViewBag.magazineId = id;
-            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name");
             return View();
         }
 
@@ -64,7 +61,7 @@ namespace Citations.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int id,[Bind("Issueid,Issuenumber,Magazineid,Publisherid,DateOfPublication")] MagazineIssue magazineIssue)
+        public async Task<IActionResult> Create(int id,/*[Bind("Issueid,Issuenumber,Magazineid,Publisherid,DateOfPublication")] */ MagazineIssue magazineIssue)
         {
            
             if (ModelState.IsValid)
@@ -77,8 +74,11 @@ namespace Citations.Controllers
                    
                 });
             }
-            ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Name", magazineIssue.Magazineid);
-            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name", magazineIssue.Publisherid);
+            Magazine magazine = _context.Magazines.FirstOrDefault(a => a.Magazineid == id);
+            ViewBag.magazineName = magazine.Name;
+            ViewBag.magazineId = id;
+            //ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Name", magazineIssue.Magazineid);
+           
             return View(magazineIssue);
         }
 
@@ -95,8 +95,15 @@ namespace Citations.Controllers
             {
                 return NotFound();
             }
-            ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Name", magazineIssue.Magazineid);
-            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name", magazineIssue.Publisherid);
+            //MagazineIssue magazineIssue1 = _context.MagazineIssues.FirstOrDefault(a => a.Issueid == id);
+            ////ViewBag.magazineName = magazineIssue1.Magazineid;
+            //ViewBag.magazineId = magazineIssue1.Magazineid;
+            ////ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Name", magazineIssue.Magazineid);
+            
+            Magazine magazine = _context.Magazines.FirstOrDefault(a => a.Magazineid == magazineIssue.Magazineid);
+            ViewBag.magazineName = magazine.Name;
+            ViewBag.magazineId = magazine.Magazineid;
+
             return View(magazineIssue);
         }
 
@@ -105,7 +112,7 @@ namespace Citations.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Issueid,Issuenumber,Magazineid,Publisherid,DateOfPublication")] MagazineIssue magazineIssue)
+        public async Task<IActionResult> Edit(int id,/* [Bind("Issueid,Issuenumber,Magazineid,Publisherid,DateOfPublication")]*/ MagazineIssue magazineIssue)
         {
             if (id != magazineIssue.Issueid)
             {
@@ -130,10 +137,20 @@ namespace Citations.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "MagazineIssues", new
+                {
+                    id = magazineIssue.Magazineid
+
+                });
             }
-            ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Isbn", magazineIssue.Magazineid);
-            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Address", magazineIssue.Publisherid);
+            //MagazineIssue magazineIssue1 = _context.MagazineIssues.FirstOrDefault(a => a.Issueid == id);
+            ////ViewBag.magazineName = magazineIssue1.Magazineid;
+            //ViewBag.magazineId = magazineIssue1.Magazineid;
+            ////ViewData["Magazineid"] = new SelectList(_context.Magazines, "Magazineid", "Isbn", magazineIssue.Magazineid);
+            Magazine magazine = _context.Magazines.FirstOrDefault(a => a.Magazineid == magazineIssue.Magazineid);
+            ViewBag.magazineName = magazine.Name;
+            ViewBag.magazineId = magazine.Magazineid;
+
             return View(magazineIssue);
         }
 
@@ -147,7 +164,6 @@ namespace Citations.Controllers
 
             var magazineIssue = await _context.MagazineIssues
                 .Include(m => m.Magazine)
-                .Include(m => m.Publisher)
                 .FirstOrDefaultAsync(m => m.Issueid == id);
             if (magazineIssue == null)
             {
@@ -168,11 +184,29 @@ namespace Citations.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
-        public JsonResult CheckIssuenumber(int Issuenumber, int Magazineid)
+        public JsonResult CheckIssuenumber(int Issuenumber, int Magazineid,int? Issueid)
         {
+            if(Issueid==null)
+            {
                 return Json(!_context.MagazineIssues.Any(e => e.Issuenumber == Issuenumber && e.Magazineid == Magazineid));
-            
-
+                
+            }
+            else
+            {
+                
+                if (_context.MagazineIssues.Any(e => e.Issuenumber == Issuenumber && e.Magazineid == Magazineid && e.Issueid == Issueid))
+                {
+                    return Json(true);
+                }
+                else if (_context.MagazineIssues.Any(e => e.Issuenumber == Issuenumber && e.Magazineid == Magazineid))
+                {
+                    return Json(false);
+                }
+                return Json(true);
+                
+                               
+            }
+               
         }
         private bool MagazineIssueExists(int id)
         {

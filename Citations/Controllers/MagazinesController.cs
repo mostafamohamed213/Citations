@@ -21,7 +21,7 @@ namespace Citations.Controllers
         // GET: Magazines
         public async Task<IActionResult> Index()
         {
-            var citationContext = _context.Magazines.Include(m => m.Institution);
+            var citationContext = _context.Magazines.Include(m => m.Institution).Include(a=>a.Publisher);
             return View(await citationContext.Where(a=>a.Active==true).ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace Citations.Controllers
 
             var magazine = await _context.Magazines
                 .Include(m => m.Institution)
+                .Include(m => m.Publisher)
                 .FirstOrDefaultAsync(m => m.Magazineid == id);
             if (magazine == null)
             {
@@ -51,6 +52,7 @@ namespace Citations.Controllers
             //ViewBag.ResearchFields = Fields;
             ViewBag.Fieldid = new MultiSelectList(_context.ResearchFields.Where(a => a.Active == true), "Fieldid", "Name");
             ViewData["Institutionid"] = new SelectList(_context.Institutions, "Institutionid", "Name");
+            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name");
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace Citations.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Isbn,ImpactFactor,ImmediateCoefficient,AppropriateValue,NumberOfCitations,Institutionid,ResearchFields")] Magazine magazine/*, IEnumerable<int> Field*/)
+        public async Task<IActionResult> Create(/*[Bind("Name,Isbn,ImpactFactor,ImmediateCoefficient,AppropriateValue,NumberOfCitations,Institutionid,ResearchFields")]*/ Magazine magazine/*, IEnumerable<int> Field*/)
         {
             if (ModelState.IsValid)
             {
@@ -79,6 +81,7 @@ namespace Citations.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Institutionid"] = new SelectList(_context.Institutions, "Institutionid", "Name", magazine.Institutionid);
+            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name", magazine.Publisherid);
             return View(magazine);
         }
 
@@ -100,6 +103,7 @@ namespace Citations.Controllers
             magazine.ResearchFields = Fields.ToArray();
             ViewBag.Fieldid = new MultiSelectList(_context.ResearchFields.Where(a => a.Active == true), "Fieldid", "Name");
             ViewData["Institutionid"] = new SelectList(_context.Institutions, "Institutionid", "Name", magazine.Institutionid);
+            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name", magazine.Publisherid);
             return View(magazine);
         }
 
@@ -108,7 +112,7 @@ namespace Citations.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Magazineid,Name,Isbn,ImpactFactor,ImmediateCoefficient,AppropriateValue,NumberOfCitations,Institutionid,Active,ResearchFields")] Magazine magazine/*, IEnumerable<int> Field*/)
+        public async Task<IActionResult> Edit(int id, /*[Bind("Magazineid,Name,Isbn,ImpactFactor,ImmediateCoefficient,AppropriateValue,NumberOfCitations,Institutionid,Active,ResearchFields")] */Magazine magazine/*, IEnumerable<int> Field*/)
         {
 
             if (id != magazine.Magazineid)
@@ -152,6 +156,7 @@ namespace Citations.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Institutionid"] = new SelectList(_context.Institutions, "Institutionid", "Name", magazine.Institutionid);
+            ViewData["Publisherid"] = new SelectList(_context.Publishers, "Publisherid", "Name", magazine.Publisherid);
             return View(magazine);
         }
 
@@ -184,100 +189,54 @@ namespace Citations.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        // GET: Magazines/AddResearchField/5
-        //public async Task<IActionResult> AddResearchField(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var magazine = await _context.Magazines.FirstOrDefaultAsync(m => m.Magazineid == id);
-        //    if (magazine == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    IEnumerable<ResearchField> MagazineFields = await _context.MagazineResearchFields.Where(a => a.Magazineid == id).Select(a => a.Field).ToListAsync();
-        //    IEnumerable<ResearchField> AllFields = await _context.ResearchFields.Where(a => a.Active == true).ToListAsync();
-        //    IEnumerable<ResearchField> AvailableFields = AllFields.Except(MagazineFields);
-        //    ViewBag.magazineName = magazine.Name;
-        //    return View(AvailableFields);
-        //}
-        //// POST: Magazines/AddResearchField/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AddResearchField(int id,int[] Field)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var magazine = await _context.Magazines.FirstOrDefaultAsync(m => m.Magazineid == id);
-        //    if (magazine == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    foreach(var item in Field)
-        //    {
-        //        var magazineResearchField = new MagazineResearchField() { Fieldid = item, Magazineid = id };
-        //        _context.Add(magazineResearchField);
-                
-        //    }
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-        /*// GET: Magazines/DeleteResearchField/5
-        public async Task<IActionResult> DeleteResearchField(int? id)
+       
+        public JsonResult CheckIsbn(string Isbn, int? Magazineid)
         {
-            if (id == null)
+            if (Magazineid == null)
             {
-                return NotFound();
-            }
+                return Json(!_context.Magazines.Any(e => e.Isbn == Isbn));
 
-            var magazine = await _context.Magazines.FirstOrDefaultAsync(m => m.Magazineid == id);
-            if (magazine == null)
-            {
-                return NotFound();
             }
-            IEnumerable<ResearchField> Fields = await _context.MagazineResearchFields.Where(a => a.Magazineid == id).Select(a => a.Field).ToListAsync();
-            ViewBag.magazineName = magazine.Name;
-            return View(Fields);
+            else
+            {
+
+                if (_context.Magazines.Any(e => e.Isbn == Isbn && e.Magazineid==Magazineid))
+                {
+                    return Json(true);
+                }
+                else if (_context.Magazines.Any(e => e.Isbn == Isbn))
+                {
+                    return Json(false);
+                }
+                return Json(true);
+
+
+            }
         }
-        // POST: Magazines/DeleteResearchField/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteResearchField(int id, int[] Field)
+        public JsonResult CheckName(string Name,int? Magazineid)
         {
-            if (id == null)
+            var name = Name.Trim();
+            if (Magazineid == null)
             {
-                return NotFound();
-            }
-
-            var magazine = await _context.Magazines.FirstOrDefaultAsync(m => m.Magazineid == id);
-            if (magazine == null)
-            {
-                return NotFound();
-            }
-            foreach (var item in Field)
-            {
-                var magazineResearchField = new MagazineResearchField() { Fieldid = item, Magazineid = id };
-                _context.Remove(magazineResearchField);
+                return Json(!_context.Magazines.Any(e => e.Name == name));
 
             }
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        */
-        public JsonResult CheckIsbn(string Isbn)
-        {
-            return Json(!_context.Magazines.Any(e => e.Isbn == Isbn ));
+            else
+            {
+
+                if (_context.Magazines.Any(e => e.Name == name && e.Magazineid == Magazineid))
+                {
+                    return Json(true);
+                }
+                else if (_context.Magazines.Any(e => e.Name == name))
+                {
+                    return Json(false);
+                }
+                return Json(true);
 
 
-        }
-        public JsonResult CheckName(string Name)
-        {
-            return Json(!_context.Magazines.Any(e => e.Name == Name));
+            }
+
 
 
         }

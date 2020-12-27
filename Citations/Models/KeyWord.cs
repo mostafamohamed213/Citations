@@ -14,6 +14,7 @@ namespace Citations.Models
 
         public int KeyWordid { get; set; }
         public string KeyWord1 { get; set; }
+        public string KeyWordEn { get; set; }
         public bool Active { get; set; }
 
         public virtual ICollection<ArticlesKeyword> ArticlesKeywords { get; set; }

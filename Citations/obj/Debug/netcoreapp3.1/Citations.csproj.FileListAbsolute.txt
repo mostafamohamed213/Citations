@@ -365,3 +365,8 @@ C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razo
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\MagazineIssues\Index.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.csproj.CoreCompileInputs.cache
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Create.cshtml.g.cs
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Delete.cshtml.g.cs
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Details.cshtml.g.cs
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Edit.cshtml.g.cs
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Index.cshtml.g.cs

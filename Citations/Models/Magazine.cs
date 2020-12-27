@@ -17,12 +17,14 @@ namespace Citations.Models
         }
 
         public int Magazineid { get; set; }
-        [Display(Name="إسم المجلة")]
-        [Remote("CheckName", "Magazines", HttpMethod = "POST", ErrorMessage = "هذا الإسم موجود من قبل ")]
+        [Display(Name = "إسم المجلة")]
+        [Remote("CheckName", "Magazines", AdditionalFields = "Magazineid", HttpMethod = "POST", ErrorMessage = "هذا الإسم موجود من قبل ")]
         public string Name { get; set; }
         [Display(Name = "الرقم التسلسلي")]
-        [Remote("CheckIsbn", "Magazines", HttpMethod = "POST", ErrorMessage = "هذا الرقم التسلسلي موجود من قبل ")]
+        [Remote("CheckIsbn", "Magazines", AdditionalFields = "Magazineid", HttpMethod = "POST", ErrorMessage = "هذا الرقم التسلسلي موجود من قبل ")]
         public string Isbn { get; set; }
+        [Display(Name = "رابط الموقع")]
+        public string WebsiteUrl { get; set; }
         [Display(Name = "معامل التأثير")]
         public int ImpactFactor { get; set; }
         [Display(Name = "المعامل الفوري")]
@@ -31,13 +33,17 @@ namespace Citations.Models
         public int AppropriateValue { get; set; }
         [Display(Name = "عدد الإقتباسات")]
         public int NumberOfCitations { get; set; }
+        [Display(Name = "اسم الناشر")]
+        public int Publisherid { get; set; }
         [Display(Name = "المؤسسة التعليمية")]
         public int Institutionid { get; set; }
         [Display(Name = "نشط ؟")]
         public bool Active { get; set; }
         [NotMapped]
         public int[] ResearchFields { get; set; }
+
         public virtual Institution Institution { get; set; }
+        public virtual Publisher Publisher { get; set; }
         public virtual ICollection<MagazineIssue> MagazineIssues { get; set; }
         public virtual ICollection<MagazineResearchField> MagazineResearchFields { get; set; }
     }

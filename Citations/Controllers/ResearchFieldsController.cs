@@ -144,6 +144,33 @@ namespace Citations.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public JsonResult CheckField(string Name, int? Fieldid)
+        {
+            var name = Name.Trim();
+            if (Fieldid == null)
+            {
+                return Json(!_context.ResearchFields.Any(e => e.Name == name));
+
+            }
+            else
+            {
+
+                if (_context.ResearchFields.Any(e => e.Name == name && e.Fieldid == Fieldid))
+                {
+                    return Json(true);
+                }
+                else if (_context.ResearchFields.Any(e => e.Name == name))
+                {
+                    return Json(false);
+                }
+                return Json(true);
+
+
+            }
+
+
+
+        }
 
         private bool ResearchFieldExists(int id)
         {

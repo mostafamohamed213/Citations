@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Citations.Models;
+using System.Text.Json;
 
 namespace Citations.Controllers
 {
@@ -44,9 +45,30 @@ namespace Citations.Controllers
 
             return View(magazine);
         }
+        public IActionResult AddField()
+        {
+            ResearchField res = new ResearchField();
+            return PartialView("_AddFieldPartialView", res);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddField(ResearchField researchField)
+         {
+            if (ModelState.IsValid)
+            {
+                researchField.Active = true;
+                _context.Add(researchField);
+                await _context.SaveChangesAsync();
+                return PartialView("_AddFieldPartialView", researchField);
+            }
+            return PartialView("_AddFieldPartialView", researchField);
+        }
+        public  JsonResult researchfields()
+        {
+            return Json(new MultiSelectList(_context.ResearchFields.Where(a => a.Active == true), "Fieldid", "Name"));
+        }
 
         // GET: Magazines/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             //IEnumerable<ResearchField> Fields = await _context.ResearchFields.Where(a=>a.Active==true).ToListAsync();
             //ViewBag.ResearchFields = Fields;

@@ -8,6 +8,7 @@
 
 
 <hr />
+<div id="placeholder"></div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -56,29 +57,29 @@
                 <select asp-for="Publisherid" class="form-control" asp-items="ViewBag.Publisherid"></select>
             </div>
             @*<div class="form-group">
-            <label class="control-label">مجالات البحث</label>
-            <br />
-            @foreach (var item in ViewBag.ResearchFields)
-            {
-                <input type="checkbox" value="@item.Fieldid" name="Field" /> @item.Name
-                <br />
-            }
-        </div>*@
+                    <label class="control-label">مجالات البحث</label>
+                    <br />
+                    @foreach (var item in ViewBag.ResearchFields)
+                    {
+                        <input type="checkbox" value="@item.Fieldid" name="Field" /> @item.Name
+                        <br />
+                    }
+                </div>*@
             <div class="form-group">
 
                 <label class="control-label">مجالات البحث</label>
                 @*Normal DropDown
-            @Html.DropDownListFor(model => model.SelectedEmployeeIDs, new SelectList(Model.EmployeeCollection, "EmployeeID", "Name"), new { id = "normalDropDown" })
+                    @Html.DropDownListFor(model => model.SelectedEmployeeIDs, new SelectList(Model.EmployeeCollection, "EmployeeID", "Name"), new { id = "normalDropDown" })
                 *@
                 @*MultiSelect DropDown*@
                 <select asp-for="ResearchFields" asp-items="ViewBag.Fieldid" size="5" multiple="multiple" class="form-control" , new { id="multiSelectDropDown" }></select>
-                @*@Html.ListBoxFor(Model.ResearchFields, ViewBag.Fieldid, new { id = "multiSelectDropDown", multiple = "multiple" })*@
+                <button type="button" class="btn btn-outline-primary" data-toggle="ajax-modal" data-target="#addField" data-url="@Url.Action("AddField")">إضافة مجال بحث جديد</button>
             </div>
             @*<div class="form-group form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-            </label>
-        </div>*@
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>*@
             <div class="form-group">
                 <input type="submit" value="إضافة" class="btn btn-primary" />
             </div>
@@ -92,20 +93,57 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/jquery/dist/chosen.jquery.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>
+   
+    <script src="~/lib/jquery/dist/chosen.jquery.min.js"></script>*@
     <script>
         $(function () {
-           
+
 
             //multiselect DropDown
             $("#multiSelectDropDown").chosen({
                 width: "100%"
             });
         });
+        $(function () {
 
+            var placeholderElement = $('#placeholder');
+            $('button[data-toggle="ajax-modal"]').click(function (event) {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                })
+            })
+            placeholderElement.on('click', '[data-save="modal"]', function (event) {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var sendData = form.serialize();
+                $.post(actionUrl, sendData).done(function (event) {
+                    placeholderElement.find('.modal').modal('hide');
+                })
+                //$(document).ready(function () {
+                var url2 = '@Url.Content("~/")' + "Magazines/researchfields";
+                $.getJSON(url2, function (data) {
+                    var items = '';
+                    $("#ResearchFields").empty();
+                    $.each(data, function (index, row) {
+                        items += "<option value='" + row.Fieldid + "'>" + row.Name + "</option>";
+                    });
+                    $("#ResearchFields").html(items);
+                })
+                    //$.get("/Magazines/researchfields", function (event) {
+                    //    $("#ResearchFields").empty();
+                    //    $.each(data, function (index, row) {
+                    //        $("#ResearchFields").append("<option value='" + row.Fieldid + "'>" + row.Name + "</option>")
+                    //    });
+                    //});
+                //})
+            })
+        });
     </script>
+   
+   
 
 }

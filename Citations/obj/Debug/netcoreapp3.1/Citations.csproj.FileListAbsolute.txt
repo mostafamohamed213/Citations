@@ -317,7 +317,6 @@ C:\Users\T.R.X\Documents\GitHub\Citations\Citations\bin\Debug\netcoreapp3.1\runt
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.csprojAssemblyReference.cache
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.AssemblyInfoInputs.cache
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.AssemblyInfo.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.RazorAssemblyInfo.cache
@@ -363,10 +362,12 @@ C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razo
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\MagazineIssues\Details.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\MagazineIssues\Edit.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\MagazineIssues\Index.cshtml.g.cs
-C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.csproj.CoreCompileInputs.cache
-C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Create.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Delete.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Details.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Edit.cshtml.g.cs
 C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\IssueOfIssues\Index.cshtml.g.cs
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Razor\Views\Magazines\_AddFieldPartialView.cshtml.g.cs
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.csproj.CoreCompileInputs.cache
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\T.R.X\Documents\GitHub\Citations\Citations\obj\Debug\netcoreapp3.1\Citations.csprojAssemblyReference.cache

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -9,17 +11,17 @@ namespace Citations.Models
     {
         public MagazineIssue()
         {
-            ArticleIssues = new HashSet<ArticleIssue>();
+            IssueOfIssues = new HashSet<IssueOfIssue>();
         }
 
         public int Issueid { get; set; }
-        public int Issuenumber { get; set; }
+        [Remote("CheckIssuenumber", "MagazineIssues", AdditionalFields = "Magazineid,Issueid", HttpMethod = "POST", ErrorMessage = "هذا العدد موجود من قبل ")]
+        [Display(Name = "العدد")]
+        [Required(ErrorMessage = "هذا الحقل مطلوب")]
+        public string Issuenumber { get; set; }
         public int Magazineid { get; set; }
-        public int Publisherid { get; set; }
-        public DateTime DateOfPublication { get; set; }
 
         public virtual Magazine Magazine { get; set; }
-        public virtual Publisher Publisher { get; set; }
-        public virtual ICollection<ArticleIssue> ArticleIssues { get; set; }
+        public virtual ICollection<IssueOfIssue> IssueOfIssues { get; set; }
     }
 }

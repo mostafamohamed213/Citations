@@ -1,0 +1,96 @@
+﻿@*@model IEnumerable<Citations.Models.IssueOfIssue>*@
+@model PaginatedList<Citations.Models.IssueOfIssue>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/settingsstile.css" rel="stylesheet" />
+<h4>إصدارات العدد<span> @ViewBag.Issuenumber</span><span>مجلة @ViewBag.magazine.Name</span><span> مؤسسة @ViewBag.magazine.Institution.Name</span> </h4>
+
+
+<div class="col-sm-3">
+    <a asp-action="Create" asp-route-id="@ViewBag.Issueid" class="btn btn-grad">اضافة اصدارات للعدد</a>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions row">
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <input type="search" class="form-control rounded" placeholder="بحث باصدار العدد" aria-label="Search"
+                       aria-describedby="search-addon" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <button type="submit" class="btn btn-outline-primary">بحث</button>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <a asp-action="Index">الرجوع الي القائمة</a>
+        </div>
+    </div>
+
+</form>
+<hr />
+<div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr>
+                <th>
+                    اصدار العدد
+                </th>
+                <th>
+                    تاريخ النشر
+                </th>
+                <th>
+                    العدد
+                </th>
+                <th>
+                    التفاصيل
+                </th>
+                <th>
+                    تعديل
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IssuenumberOfIssue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfPublication)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MagazineIssue.Issuenumber)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.IssueOfIssueid" class="btn btn-info mr-2 eda">التفاصيل</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IssueOfIssueid" class="btn btn-primary mr-2 eda">تعديل</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-action="Index" asp-controller="MagazineIssues" asp-route-id="@ViewBag.magazineid">العودة للأعداد</a>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @prevDisabled">
+    السابق
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @nextDisabled">
+    التالي
+</a>

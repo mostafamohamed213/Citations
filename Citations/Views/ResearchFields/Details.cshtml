@@ -1,0 +1,39 @@
+﻿@model Citations.Models.ResearchField
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>تفاصيل مجال البحث</h1>
+<h1>@Model.Name</h1>
+
+<div>
+    
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+           
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" readonly />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NameEn" class="control-label"></label>
+                    <input asp-for="NameEn" class="form-control" readonly />
+                    <span asp-validation-for="NameEn" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active"  disabled /> نشط
+                    </label>
+                </div>
+              
+       
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Fieldid">تعديل</a> |
+    <a asp-action="Index">عودة لمجالات البحث</a>
+</div>

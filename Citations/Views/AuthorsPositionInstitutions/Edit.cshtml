@@ -1,0 +1,49 @@
+﻿@model Citations.Models.AuthorsPositionInstitution
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AuthorsPositionInstitution</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" style="color:red"></div>
+            <input type="hidden" asp-for="AuthorsPositionInstitutionId" />
+            <div class="form-group">
+                <label asp-for="Authorid" class="control-label"></label>
+                <select asp-for="Authorid" class="form-control" asp-items="ViewBag.Authorid"></select>
+                <span asp-validation-for="Authorid" style="color:red"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Institutionid" class="control-label"></label>
+                <select asp-for="Institutionid" class="form-control" asp-items="ViewBag.Institutionid"></select>
+                <span asp-validation-for="Institutionid" style="color:red"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PositionJobid" class="control-label"></label>
+                <select asp-for="PositionJobid" class="form-control" asp-items="ViewBag.PositionJobid"></select>
+                <span asp-validation-for="PositionJobid" style="color:red"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="MainIntitute" /> @Html.DisplayNameFor(model => model.MainIntitute)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

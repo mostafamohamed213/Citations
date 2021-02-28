@@ -1,0 +1,92 @@
+﻿@model Citations.Models.Department
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+ 
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Departmentid" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <!--<div class="details">
+                <h5 class="text-danger">
+                    you must select at least one main institution
+                </h5>
+                <table class="table">
+                    <tr>
+                        <td>المؤسسة</td>
+
+                        <td>الكلية</td>
+
+
+
+
+
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="mycontainer" id="mainrow">
+                        <td width="20%">
+
+                            <select id="Institutions" name="institutions" asp-items="@ViewBag.Institutionid" required class="pc form-control" onchange="LoadFuclty(this)">
+                                <option value="0">Select</option>
+                            </select>
+                            <span class="error">Select Institution</span>
+
+                        </td>
+
+                        <td width="20%">
+                            <select id="Faculty" name="Faculty" class="product form-control" required onchange="LoadDepartment(this)">
+                                <option value="0">Select</option>
+                            </select>
+                            <span class="error">Select Faculty</span>
+                        </td>-->
+
+
+                        @*<td>
+                        <input type="text" id="rate" class="rate form-control" />
+                        <span class="error">Valid rate required</span>
+                    </td>*@
+                        <!--<td width="25%">
+                            <input type="button" id="addinstitfac" value="add" style="width:80px" class="btn btn-success" />
+                        </td>
+                    </tr>
+                </table>
+
+
+
+
+                <div id="orderItems">
+                    <table class="table table-responsive" id="AuthposItems"></table>
+                    <span id="orderItemError" style="color:red"></span>
+                </div>
+
+            </div>-->
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Citations.Models.AuthorResearchField>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Field)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="tr_@item.Authorid _@item.Fieldid">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Field.Name)
+                </td>
+                <td>
+
+                    <a  href="javascript:void(0)" onclick="confirmdelete(@item.Authorid,@item.Fieldid)" class="fa fa-trash" style="color:red" title="Remove"></a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+    @Html.ActionLink("Back To Authors", "Index","Authors")
+    @*@Html.ActionLink("Add ResearchField",,"Authors")*@
+</table>
+<script>
+  
+
+    function confirmdelete(Authorid, Fieldid) {
+
+        Swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+          
+             
+        }).then((result) => {
+            AutherField = {
+
+                AutherId: Authorid,
+                FieldId: Fieldid,
+               
+
+            };
+           
+            if (result.value==true) {
+                $.ajax({
+                   
+                    type: 'POST',
+                    url: '/AuthorResearchFields/Delete/',
+                    data: JSON.stringify(AutherField),
+                    contentType: 'application/json',
+                    datatype: "json",
+                    success: function (response) {
+                      
+                        var id = 'tr_' + Authorid + ' _' + Fieldid;
+                        var tr = document.getElementById(id);
+                        tr.remove();
+                        Swal({
+                            title: "Deleted",
+                            text: "Done!",
+                            type: 'success'
+                        })
+
+                    },
+                    error: function (err, result) {
+                        alert("Error in delete" + err.responseText);
+                    }
+                })
+              
+                
+            }
+          
+        })
+    }
+</script>

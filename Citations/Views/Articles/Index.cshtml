@@ -1,65 +1,98 @@
-﻿@model IEnumerable<Citations.Models.Article>
-
+﻿@*@model IEnumerable<Citations.Models.Article>*@
+@model PaginatedList<Citations.Models.Article>
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/css/settingsstile.css" rel="stylesheet" />
+<h1 class="m-2">المقالات</h1>
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Articletittle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ScannedArticlePdf)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ScannedBriefQuote)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfCitations)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfReferences)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Articletittle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ScannedArticlePdf)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ScannedBriefQuote)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfCitations)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfReferences)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Articleid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Articleid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Articleid">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="col-sm-3">
+    <a asp-action="Create" class="btn btn-grad">اضافة مقال جديد</a>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions row">
+       
+        <div class="col-sm-9">
+            <div class="input-group">
+                <input type="search" class="form-control rounded" placeholder="بحث بعنوان المقال" aria-label="Search"
+                       aria-describedby="search-addon" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <button type="submit" class="btn btn-outline-primary">بحث</button>
+            </div>
+            </div>
+            <div class="col-sm-3">
+                <a asp-action="Index">الرجوع الي القائمة</a>
+            </div>
+        </div>
+    
+</form>
+<hr />
+<div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr>
+                <th>
+                    عنوان المقال
+                </th>
+                @*<th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">الاستشهادات</a>
+                </th>
+                <th>
+                    المراجع
+                </th>*@
+                <th>
+                    نشط
+                </th>
+                <th>
+                    التفاصيل
+                </th>
+                <th>
+                    تعديل
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Articletittle)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Articleid" class="btn btn-info mr-2 eda">التفاصيل</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Articleid" class="btn btn-primary mr-2 eda">تعديل</a>
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-primary @prevDisabled">
+       السابق
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-primary @nextDisabled">
+        التالي
+    </a>

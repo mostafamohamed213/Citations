@@ -1,0 +1,29 @@
+﻿@model Citations.Models.TypeOfInstitution
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h5>تفاصيل نوع المؤسسة</h5>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.TypeName)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.TypeName)
+        </dd>
+        <dt class = "col-sm-4">
+           نشط
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.TypeInstitutionid">تعديل</a> |
+    <a asp-action="Index">الرجوع الي القائمة</a>
+</div>

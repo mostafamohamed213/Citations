@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Citations.Models.TypeOfInstitution>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link href="~/css/settingsstile.css" rel="stylesheet" />
+<h1 class="m-2">انواع المؤسسات</h1>
+
+
+<div class="col-sm-3">
+    <a asp-action="Create" class="btn btn-grad">اضافة انواع المؤسسات</a>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TypeName)
+                </th>
+                <th>
+                    نشط
+                </th>
+                <th>
+                    التفاصيل
+                </th>
+                <th>
+                    تعديل
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.TypeInstitutionid" class="btn btn-info mr-2 eda">التفاصيل</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TypeInstitutionid" class="btn btn-primary mr-2 eda">تعديل</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+  </div>

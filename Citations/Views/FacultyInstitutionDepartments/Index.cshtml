@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Citations.Models.FacultyInstitutionDepartment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+<h5 class="text-success"> Institution</h5>
+@Html.DisplayFor(modelItem => Model.FirstOrDefault().FacultyInstitution.Institution.Name)
+<h5 class="text-success"> faculty</h5>
+@Html.DisplayFor(modelItem => Model.FirstOrDefault().FacultyInstitution.Faculty.Name)
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.Name)
+                </td>
+
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FacultyInstitutionDepartmentid">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.FacultyInstitutionDepartmentid">Details</a> |
+                    @*<a asp-action="Delete" asp-route-id="@item.FacultyInstitutionDepartmentid">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

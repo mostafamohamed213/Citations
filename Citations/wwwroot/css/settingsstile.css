@@ -1,0 +1,43 @@
+﻿.eda
+{
+    height:35px;
+   
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 500px;
+    overflow: auto;
+    margin-right:5%;
+    margin-left:5%;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+
+
+.btn-grad {
+    background-image: linear-gradient(to right, #52c234 0%, #061700 51%, #52c234 100%)
+}
+
+.btn-grad {
+    margin: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+    .btn-grad:hover {
+        background-position: right center; /* change the direction of the change here */
+        color: #fff;
+        text-decoration: none;
+    }
+         
+         

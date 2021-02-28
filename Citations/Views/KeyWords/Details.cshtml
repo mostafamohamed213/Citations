@@ -1,0 +1,36 @@
+﻿@model Citations.Models.KeyWord
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h5>التفاصيل</h5>
+
+<div>
+ 
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.KeyWord1)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.KeyWord1)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.KeyWordEn)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.KeyWordEn)
+        </dd>
+        <dt class = "col-sm-4">
+           نشط
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.KeyWordid">تعديل</a> |
+    <a asp-action="Index">الرجوع الي القائمه</a>
+</div>

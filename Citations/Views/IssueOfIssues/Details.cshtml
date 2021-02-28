@@ -1,0 +1,37 @@
+﻿@model Citations.Models.IssueOfIssue
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>تفاصيل</h4>
+
+<div>
+    <h5> الإصدار <span>@Model.IssuenumberOfIssue</span><span> للعدد @ViewBag.Issuenumber</span><span>مجلة @ViewBag.magazine.Name</span><span> مؤسسة @ViewBag.magazine.Institution.Name</span></h5>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IssuenumberOfIssue)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IssuenumberOfIssue)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.DateOfPublication)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.DateOfPublication)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.MagazineIssue.Issuenumber)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.MagazineIssue.Issuenumber)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IssueOfIssueid">تعديل</a> |
+    <a asp-action="Index" asp-route-id="@ViewBag.Issueid">العودة للإصدارات</a>
+</div>

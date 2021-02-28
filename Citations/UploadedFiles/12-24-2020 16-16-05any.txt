@@ -1,0 +1,32 @@
+class User
+{
+	prop UserID;
+	prop Username;
+	prop List<int> Permissions;
+}
+
+User u = db.User.Include(u => u.UserPermission).FirstOrDefault(u => u.Username == u && u.Password == hashedPassword);
+if (u == null) return Content("Invalid credentials");
+else
+{
+	HttpContext.Session.SetString("User", NewtonSoft.Json.Deserialize(u));
+	return RedirectToAction("Home");
+}
+
+
+public IActionResult AddUser(User user)
+{
+	User currentUser = NewtonSoft.Serialize<User>(HttpContext.GetString("User"));
+	if (user.Permissions.Contains(1))
+	{
+	}
+	else
+	{
+		return View("Unauthorized");
+	}
+}
+
+public class x
+{
+	static int onlineusers = 0;
+}

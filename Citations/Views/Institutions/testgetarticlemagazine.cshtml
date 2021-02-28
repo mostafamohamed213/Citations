@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Citations.Models.Article>
+@{
+    ViewData["Title"] = "Index";
+}
+<link href="~/css/settingsstile.css" rel="stylesheet" />
+<h1 class="m-2">المقالات</h1>
+
+
+<div class="col-sm-3">
+    <a asp-action="Create" class="btn btn-grad">اضافة مقال جديد</a>
+</div>
+
+
+
+
+<hr />
+<div class="table-responsive">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr>
+                <th>
+                    عنوان المقال
+                </th>
+                @*<th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">الاستشهادات</a>
+                    </th>
+                    <th>
+                        المراجع
+                    </th>*@
+                <th>
+                    نشط
+                </th>
+                <th>
+                    التفاصيل
+                </th>
+                <th>
+                    تعديل
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Articletittle)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Articleid" class="btn btn-info mr-2 eda">التفاصيل</a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Articleid" class="btn btn-primary mr-2 eda">تعديل</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

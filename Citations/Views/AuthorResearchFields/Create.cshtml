@@ -1,0 +1,98 @@
+﻿@model Citations.Models.AuthorResearchField
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<hr />
+
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" style="color:red"></div>
+    <div class="row">
+        <div class="form-group  col-md-4">
+            <label asp-for="Authorid" class="control-label"></label>
+            <select asp-for="Authorid" class="form-control" asp-items="ViewBag.Authorid" onchange="authorchanged(this)"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="demo">
+            <label asp-for="Fieldid" class="control-label"></label>
+            <select asp-for="Fieldid" class="form-control" asp-items="ViewBag.Fieldid" multiple style="display:none" ></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+ 
+
+
+   
+
+
+<script src="//code.jquery.com/jquery.min.js"></script>
+
+
+
+<link href="~/Searchable-Multi-select-jQuery-Dropdown/jquery.dropdown.css" rel="stylesheet" />
+
+<script src="~/Searchable-Multi-select-jQuery-Dropdown/jquery.dropdown.js"></script>
+<script>
+    function authorchanged(value) {
+
+        var autherid = value.options[value.selectedIndex].value;
+        $.getJSON('/AuthorResearchFields/AutherChanged', { autherid: autherid }, function (response) {
+
+           
+            var vals = [];
+            var search = document.getElementsByClassName("dropdown-search")[0];
+            var searchinput = search.getElementsByTagName('input');
+            var input = searchinput[0];
+            input.innerHTML = "";
+            var selected = document.getElementsByClassName("dropdown-chose-list")[0];
+          
+            var spans = selected.getElementsByClassName('dropdown-selected');
+            for (var i = 0;i< spans.length;i++) {
+                var span = selected.getElementsByClassName('dropdown-selected')[i];
+                span.remove(); 
+            }
+            
+          
+            
+            
+            var ii = document.getElementsByClassName("dropdown-main")[0];
+            var hh = ii.getElementsByTagName('ul');
+            var ul = hh[0];
+            ul.innerHTML=""; 
+            $.each(response, function (index, value) {
+                var id = value["fieldid"];
+                hh[0].innerHTML += "<li tabindex='" + index + "' class='dropdown-option' data-value='" + id + "'>" + value["name"] + "</li>";
+            });
+
+
+           
+           
+
+           
+        })}
+    $('.demo').dropdown({
+        multipleMode: 'label',
+        input: '<input type="text" maxLength="20" placeholder="ابحث">',
+        searchNoData: '<li style="color:red">No Results</li>',
+        
+        choice: function (val) { },
+
+
+
+    });
+
+</script>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

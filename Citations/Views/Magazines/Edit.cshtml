@@ -1,0 +1,126 @@
+﻿@model Citations.Models.Magazine
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h5>تعديل </h5>
+<h6>@Model.Name </h6>
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Magazineid" />
+            @*<input type="hidden" asp-for="Name" />
+        <input type="hidden" asp-for="Isbn" />*@
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="Isbn" class="control-label"></label>
+                    <input asp-for="Isbn" class="form-control" />
+                    <span asp-validation-for="Isbn" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="WebsiteUrl" class="control-label"></label>
+                    <input asp-for="WebsiteUrl" class="form-control" />
+                    <span asp-validation-for="WebsiteUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row" style="display:none">
+                <div class="form-group col-sm-4">
+                    <label asp-for="ImpactFactor" class="control-label"></label>
+                    <input asp-for="ImpactFactor" class="form-control" />
+                    <span asp-validation-for="ImpactFactor" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-sm-4">
+                    <label asp-for="ImmediateCoefficient" class="control-label"></label>
+                    <input asp-for="ImmediateCoefficient" class="form-control" />
+                    <span asp-validation-for="ImmediateCoefficient" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="AppropriateValue" class="control-label"></label>
+                    <input asp-for="AppropriateValue" class="form-control" />
+                    <span asp-validation-for="AppropriateValue" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="NumberOfCitations" class="control-label"></label>
+                    <input asp-for="NumberOfCitations" class="form-control" />
+                    <span asp-validation-for="NumberOfCitations" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+               
+                <div class="form-group col-sm-6">
+                    <label asp-for="Institutionid" class="control-label"></label>
+                    <select asp-for="Institutionid" class="form-control" asp-items="ViewBag.Institutionid"></select>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label asp-for="Publisherid" class="control-label"></label>
+                    <select asp-for="Publisherid" class="form-control" asp-items="ViewBag.Publisherid"></select>
+                </div>
+            </div>
+
+            @*<div class="form-group">
+            <label class="control-label">مجالات البحث</label>
+            <br />
+            @foreach (var item in ViewBag.ResearchFields)
+            {
+                <input type="checkbox" value="@item.Fieldid" name="Field" checked="true" /> @item.Name
+                <br />
+            }
+        </div>*@
+            <div class="form-group">
+
+                <label class="control-label">مجالات البحث</label>
+                @*Normal DropDown
+            @Html.DropDownListFor(model => model.SelectedEmployeeIDs, new SelectList(Model.EmployeeCollection, "EmployeeID", "Name"), new { id = "normalDropDown" })
+                *@
+                @*MultiSelect DropDown*@
+                <select asp-for="ResearchFields" asp-items="ViewBag.Fieldid" size="5" multiple="multiple" class="form-control" , new { id="multiSelectDropDown" }></select>
+                @*@Html.ListBoxFor(Model.ResearchFields, ViewBag.Fieldid, new { id = "multiSelectDropDown", multiple = "multiple" })*@
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> نشط
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">العودة للمجلات</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    
+    <script src="~/js/chosen.jquery.min.js"></script>
+    <script>
+        $(function () {
+            //normal dropdown
+            //$("#normalDropDown").chosen({
+            //    disable_search_threshold : 5
+            ////});
+
+            //multiselect DropDown
+            $("#multiSelectDropDown").chosen({
+                width: "100%"
+            });
+        });
+
+    </script>
+
+}

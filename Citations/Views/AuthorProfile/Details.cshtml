@@ -1,0 +1,300 @@
+﻿@model IEnumerable<Citations.Models.AuthorsPositionInstitution>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<head>
+    <style>
+
+
+        body {
+            background: #F1F3FA;
+        }
+
+        /* Profile container */
+        .profile {
+        }
+
+        /* Profile sidebar */
+        .profile-sidebar {
+            background: #fff;
+        }
+
+        .img {
+        }
+
+        .profile-usertitle {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-usertitle-name {
+            color: #5a7391;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .profile-usertitle-job {
+            text-transform: uppercase;
+            color: #5b9bd1;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .profile-userbuttons {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+            .profile-userbuttons .btn {
+                text-transform: uppercase;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 6px 15px;
+                margin-right: 5px;
+            }
+
+                .profile-userbuttons .btn:last-child {
+                    margin-right: 0px;
+                }
+
+        .profile-usermenu {
+            margin-top: 30px;
+        }
+
+            .profile-usermenu ul li {
+                border-bottom: 1px solid #f0f4f7;
+            }
+
+                .profile-usermenu ul li:last-child {
+                    border-bottom: none;
+                }
+
+                .profile-usermenu ul li a {
+                    color: #93a3b5;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                    .profile-usermenu ul li a i {
+                        margin-right: 8px;
+                        font-size: 14px;
+                    }
+
+                    .profile-usermenu ul li a:hover {
+                        background-color: #fafcfd;
+                        color: #5b9bd1;
+                    }
+
+                .profile-usermenu ul li.active {
+                    border-bottom: none;
+                }
+
+                    .profile-usermenu ul li.active a {
+                        color: #5b9bd1;
+                        background-color: #f6f9fb;
+                        border-left: 2px solid #5b9bd1;
+                        margin-left: -2px;
+                    }
+
+        /* Profile Content */
+        .profile-content {
+            padding: 20px;
+            background: #fff;
+            min-height: 460px;
+        }
+    </style>
+</head>
+@foreach (var item in Model.FirstOrDefault().Author.ArticleAuthores)
+{
+    <p> @item.Author.Name</p>
+   
+}
+
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-10">
+            <div class="profile-sidebar">
+                <!-- SIDEBAR USERPIC -->
+                <div class="profile-userpic">
+
+                </div>
+                <!-- END SIDEBAR USERPIC -->
+                <!-- SIDEBAR USER TITLE -->
+                <div class="profile-usertitle">
+
+                    <dl class="row">
+
+                        <dt class="col-sm-2">
+                            @Html.DisplayName("الصورة")
+                        </dt>
+                        <dd class="col-sm-10">
+
+                            <img src="~/AutherImages/@Model.FirstOrDefault().Author.ScannedAuthorimage" class="img-circle" alt="" style=" float: none; margin: 5% 10% 10% 30%; width: 20%; height: 160px; -webkit-border-radius: 50% !important; -moz-border-radius: 50% !important; border-radius: 50% !important;">
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Author.Name)
+                        </dt>
+                        <dd class="col-sm-10">
+
+                            @Html.DisplayFor(model => model.FirstOrDefault().Author.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Author.AuthorBio)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.FirstOrDefault().Author.AuthorBio)
+                        </dd>
+
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Author.PointerH)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.FirstOrDefault().Author.PointerH)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Author.Active)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.FirstOrDefault().Author.Active)
+                        </dd>
+
+                        <dt class="col-sm-2">
+                            @Html.DisplayName("مجالات البحث")
+                        </dt>
+                        <dd class="col-sm-10">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> الاسم العربي</th>
+                                        <th> الاسم الانجليزي</th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.FirstOrDefault().Author.AuthorResearchFields)
+                                {
+
+                                    <tr>
+                                        <td>  @Html.DisplayFor(model => item.Field.Name)</td>
+                                        <td>  @Html.DisplayFor(model => item.Field.NameEn)</td>
+                                    </tr>
+
+
+
+                                }
+                            </table>
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayName("المسمي الوظيفي")
+                        </dt>
+                        <dd class="col-sm-10">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> المؤسسة التعليمية</th>
+                                        <th>الكلية</th>
+                                        <th>القسم</th>
+                                        <th> المسمى الوظيفي</th>
+                                    </tr>
+
+                                </thead>
+
+                                @foreach (var item in Model)
+                                {
+                                    string id = item.FacultyInstitutionDepartment.FacultyInstitution.Institution.Institutionid + "_" +
+                                        item.FacultyInstitutionDepartment.FacultyInstitution.Faculty.Facultyid + "_" +
+                                       item.FacultyInstitutionDepartment.Department.Departmentid + "_" +
+                                       +item.PositionJob.PositionJobid;
+                                    <tr id="@id">
+
+
+                                        <td>  @Html.DisplayFor(model => item.FacultyInstitutionDepartment.FacultyInstitution.Institution.Name)</td>
+                                        <td>  @Html.DisplayFor(model => item.FacultyInstitutionDepartment.FacultyInstitution.Faculty.Name)</td>
+                                        <td>  @Html.DisplayFor(model => item.FacultyInstitutionDepartment.Department.Name)</td>
+                                        <td>  @Html.DisplayFor(model => item.PositionJob.PositionJob1)</td>
+                                    </tr>
+
+
+
+                                }
+
+                            </table>
+                        </dd>
+
+                    </dl>
+
+                    <div class="profile-usertitle-job">
+                        @*Developer*@
+                    </div>
+                </div>
+                <!-- END SIDEBAR USER TITLE -->
+                <!-- SIDEBAR BUTTONS -->
+                <div class="profile-userbuttons">
+                    @*<button type="button" class="btn btn-success btn-sm">Follow</button>
+                        <button type="button" class="btn btn-danger btn-sm">Message</button>*@
+                </div>
+                <!-- END SIDEBAR BUTTONS -->
+                <!-- SIDEBAR MENU -->
+                <div class="profile-usermenu">
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-home"></i>
+                                Overview
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="edit" asp-route-id="@Model.FirstOrDefault().Author.Authorid">
+                                <i class="glyphicon glyphicon-user"></i>
+                                Settings
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- END MENU -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div>
+
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $.noConflict();
+
+
+
+        $('.table').DataTable({
+            //"scrollX": true,
+            columnDefs: [
+                {
+                    //className: "dt-right", "targets": "_all",
+                    // className: 'dt-head-right', targets: "_all",
+
+                }
+
+            ],
+            "scrollY": "200px",
+            "scrollCollapse": true,
+            "fixedHeader": true,
+            "bFilter": false,
+            "bPaginate": false,
+            "stateSave": true,
+            "pagingType": "full_numbers",
+            "bInfo": false,
+            "oLanguage": {
+                "sSearch": "بحث:"
+            }
+        });
+    })
+</script>

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Citations.Models.AuthorsPositionInstitution>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MainIntitute)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Institution)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositionJob)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainIntitute)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Institution.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionJob.PositionJob1)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AuthorsPositionInstitutionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AuthorsPositionInstitutionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AuthorsPositionInstitutionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

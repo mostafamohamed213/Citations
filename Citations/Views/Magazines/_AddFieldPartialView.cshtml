@@ -1,0 +1,35 @@
+﻿@model Citations.Models.ResearchField
+<div class="modal fade" id="addField">
+    <div class="modal-dialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addFieldLable">إضافة مجال بحث</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>X</span></button>
+
+            </div>
+            <div class="modal-body">
+                <form asp-action="addField">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    @*<div class="form-group">
+                             <input type="submit" value="إضافة" class="btn btn-outline-primary" data-save="modal" />
+                       </div>*@
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-outline-primary" data-save="modal">إضافة</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>

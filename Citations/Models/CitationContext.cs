@@ -19,13 +19,22 @@ namespace Citations.Models
 
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<ArticleAuthore> ArticleAuthores { get; set; }
-        public virtual DbSet<ArticleIssue> ArticleIssues { get; set; }
+        public virtual DbSet<ArticleReference> ArticleReferences { get; set; }
         public virtual DbSet<ArticlesKeyword> ArticlesKeywords { get; set; }
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<AuthorResearchField> AuthorResearchFields { get; set; }
         public virtual DbSet<AuthorsPositionInstitution> AuthorsPositionInstitutions { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<BookAuthore> BookAuthores { get; set; }
+        public virtual DbSet<ConferenceProceeding> ConferenceProceedings { get; set; }
+        public virtual DbSet<ConferenceProceedingsAuthor> ConferenceProceedingsAuthors { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Faculty> Faculties { get; set; }
+        public virtual DbSet<FacultyInstitution> FacultyInstitutions { get; set; }
+        public virtual DbSet<FacultyInstitutionDepartment> FacultyInstitutionDepartments { get; set; }
         public virtual DbSet<Institution> Institutions { get; set; }
+        public virtual DbSet<IssueOfIssue> IssueOfIssues { get; set; }
         public virtual DbSet<KeyWord> KeyWords { get; set; }
         public virtual DbSet<Magazine> Magazines { get; set; }
         public virtual DbSet<MagazineIssue> MagazineIssues { get; set; }
@@ -33,6 +42,9 @@ namespace Citations.Models
         public virtual DbSet<PositionJob> PositionJobs { get; set; }
         public virtual DbSet<Publisher> Publishers { get; set; }
         public virtual DbSet<ResearchField> ResearchFields { get; set; }
+        public virtual DbSet<TypeOfInstitution> TypeOfInstitutions { get; set; }
+        public virtual DbSet<TypeOfPublisher> TypeOfPublishers { get; set; }
+        public virtual DbSet<TypeOfSource> TypeOfSources { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,26 +61,56 @@ namespace Citations.Models
             {
                 entity.ToTable("articles", "core");
 
+                entity.HasIndex(e => e.ArticletittleEn, "articles_articletittle_en_key")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Articletittle, "articles_articletittle_key")
+                    .IsUnique();
+
                 entity.Property(e => e.Articleid).HasColumnName("articleid");
 
                 entity.Property(e => e.Active).HasColumnName("active");
 
+                entity.Property(e => e.ArticleIssue).HasColumnName("article_issue");
+
                 entity.Property(e => e.Articletittle)
                     .IsRequired()
-                    .HasMaxLength(255)
+                    .HasMaxLength(1000)
                     .HasColumnName("articletittle");
 
-                entity.Property(e => e.NumberOfCitations).HasColumnName("number_of_citations");
+                entity.Property(e => e.ArticletittleEn)
+                    .HasMaxLength(1000)
+                    .HasColumnName("articletittle_en");
 
-                entity.Property(e => e.NumberOfReferences).HasColumnName("number_of_references");
+                entity.Property(e => e.BriefQuote)
+                    .HasColumnType("character varying")
+                    .HasColumnName("brief_quote");
+
+                entity.Property(e => e.BriefQuoteEn)
+                    .HasColumnType("character varying")
+                    .HasColumnName("brief_quote_en");
+
+                entity.Property(e => e.NumberOfCitations)
+                    .HasColumnName("number_of_citations")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.NumberOfReferences)
+                    .HasColumnName("number_of_references")
+                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.Page)
+                    .HasMaxLength(128)
+                    .HasColumnName("page");
 
                 entity.Property(e => e.ScannedArticlePdf)
                     .HasMaxLength(512)
                     .HasColumnName("scanned_article_pdf");
 
-                entity.Property(e => e.ScannedBriefQuote)
-                    .HasMaxLength(512)
-                    .HasColumnName("scanned_brief_quote");
+                entity.HasOne(d => d.ArticleIssueNavigation)
+                    .WithMany(p => p.Articles)
+                    .HasForeignKey(d => d.ArticleIssue)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("articles_article_issue_fkey");
             });
 
             modelBuilder.Entity<ArticleAuthore>(entity =>
@@ -97,28 +139,50 @@ namespace Citations.Models
                     .HasConstraintName("article_authores_authorid_fkey");
             });
 
-            modelBuilder.Entity<ArticleIssue>(entity =>
+            modelBuilder.Entity<ArticleReference>(entity =>
             {
-                entity.HasKey(e => new { e.Articleid, e.MagazineIssueId })
-                    .HasName("article_issue_pkey");
+                entity.HasKey(e => e.ArticleReferencesid)
+                    .HasName("article_references_pkey");
 
-                entity.ToTable("article_issue", "core");
+                entity.ToTable("article_references", "core");
+
+                entity.Property(e => e.ArticleReferencesid).HasColumnName("article_referencesid");
 
                 entity.Property(e => e.Articleid).HasColumnName("articleid");
 
-                entity.Property(e => e.MagazineIssueId).HasColumnName("magazine_issue_id");
+                entity.Property(e => e.Articlerefid).HasColumnName("articlerefid");
+
+                entity.Property(e => e.Bookid).HasColumnName("bookid");
+
+                entity.Property(e => e.Conferenceid).HasColumnName("conferenceid");
+
+                entity.Property(e => e.TypeSourceid).HasColumnName("type_sourceid");
 
                 entity.HasOne(d => d.Article)
-                    .WithMany(p => p.ArticleIssues)
+                    .WithMany(p => p.ArticleReferenceArticles)
                     .HasForeignKey(d => d.Articleid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("article_issue_articleid_fkey");
+                    .HasConstraintName("article_references_articleid_fkey");
 
-                entity.HasOne(d => d.MagazineIssue)
-                    .WithMany(p => p.ArticleIssues)
-                    .HasForeignKey(d => d.MagazineIssueId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("article_issue_magazine_issue_id_fkey");
+                entity.HasOne(d => d.Articleref)
+                    .WithMany(p => p.ArticleReferenceArticlerefs)
+                    .HasForeignKey(d => d.Articlerefid)
+                    .HasConstraintName("article_references_articlerefid_fkey");
+
+                entity.HasOne(d => d.Book)
+                    .WithMany(p => p.ArticleReferences)
+                    .HasForeignKey(d => d.Bookid)
+                    .HasConstraintName("article_references_bookid_fkey");
+
+                entity.HasOne(d => d.Conference)
+                    .WithMany(p => p.ArticleReferences)
+                    .HasForeignKey(d => d.Conferenceid)
+                    .HasConstraintName("article_references_conferenceid_fkey");
+
+                entity.HasOne(d => d.TypeSource)
+                    .WithMany(p => p.ArticleReferences)
+                    .HasForeignKey(d => d.TypeSourceid)
+                    .HasConstraintName("article_references_type_sourceid_fkey");
             });
 
             modelBuilder.Entity<ArticlesKeyword>(entity =>
@@ -203,7 +267,7 @@ namespace Citations.Models
 
                 entity.Property(e => e.Authorid).HasColumnName("authorid");
 
-                entity.Property(e => e.Institutionid).HasColumnName("institutionid");
+                entity.Property(e => e.FacultyInstitutionDepartmentid).HasColumnName("faculty_institution_departmentid");
 
                 entity.Property(e => e.MainIntitute).HasColumnName("main_intitute");
 
@@ -215,17 +279,154 @@ namespace Citations.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("authors_position_institution_authorid_fkey");
 
-                entity.HasOne(d => d.Institution)
+                entity.HasOne(d => d.FacultyInstitutionDepartment)
                     .WithMany(p => p.AuthorsPositionInstitutions)
-                    .HasForeignKey(d => d.Institutionid)
+                    .HasForeignKey(d => d.FacultyInstitutionDepartmentid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("authors_position_institution_institutionid_fkey");
+                    .HasConstraintName("authors_position_institution_faculty_institution_departmen_fkey");
 
                 entity.HasOne(d => d.PositionJob)
                     .WithMany(p => p.AuthorsPositionInstitutions)
                     .HasForeignKey(d => d.PositionJobid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("authors_position_institution_position_jobid_fkey");
+            });
+
+            modelBuilder.Entity<Book>(entity =>
+            {
+                entity.ToTable("books", "core");
+
+                entity.HasIndex(e => e.Booktittle, "books_booktittle_key")
+                    .IsUnique();
+
+                entity.Property(e => e.Bookid).HasColumnName("bookid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Booktittle)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("booktittle");
+
+                entity.Property(e => e.Country).HasColumnName("country");
+
+                entity.Property(e => e.Page)
+                    .HasMaxLength(128)
+                    .HasColumnName("page");
+
+                entity.Property(e => e.Publisherid).HasColumnName("publisherid");
+
+                entity.Property(e => e.Year)
+                    .HasMaxLength(128)
+                    .HasColumnName("year");
+
+                entity.HasOne(d => d.CountryNavigation)
+                    .WithMany(p => p.Books)
+                    .HasForeignKey(d => d.Country)
+                    .HasConstraintName("books_country_fkey");
+
+                entity.HasOne(d => d.Publisher)
+                    .WithMany(p => p.Books)
+                    .HasForeignKey(d => d.Publisherid)
+                    .HasConstraintName("books_publisherid_fkey");
+            });
+
+            modelBuilder.Entity<BookAuthore>(entity =>
+            {
+                entity.HasKey(e => new { e.Authorid, e.Bookid })
+                    .HasName("book_authores_pkey");
+
+                entity.ToTable("book_authores", "core");
+
+                entity.Property(e => e.Authorid).HasColumnName("authorid");
+
+                entity.Property(e => e.Bookid).HasColumnName("bookid");
+
+                entity.Property(e => e.MainAuthor).HasColumnName("main_author");
+
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.BookAuthores)
+                    .HasForeignKey(d => d.Authorid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("book_authores_authorid_fkey");
+
+                entity.HasOne(d => d.Book)
+                    .WithMany(p => p.BookAuthores)
+                    .HasForeignKey(d => d.Bookid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("book_authores_bookid_fkey");
+            });
+
+            modelBuilder.Entity<ConferenceProceeding>(entity =>
+            {
+                entity.HasKey(e => e.Conferenceid)
+                    .HasName("conference_proceedings_pkey");
+
+                entity.ToTable("conference_proceedings", "core");
+
+                entity.HasIndex(e => e.Conferencetittle, "conference_proceedings_conferencetittle_key")
+                    .IsUnique();
+
+                entity.Property(e => e.Conferenceid).HasColumnName("conferenceid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.ConferencePublicationName)
+                    .HasMaxLength(256)
+                    .HasColumnName("conference_publication_name");
+
+                entity.Property(e => e.Conferencetittle)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("conferencetittle");
+
+                entity.Property(e => e.Country).HasColumnName("country");
+
+                entity.Property(e => e.Page)
+                    .HasMaxLength(128)
+                    .HasColumnName("page");
+
+                entity.Property(e => e.Publisherid).HasColumnName("publisherid");
+
+                entity.Property(e => e.Year)
+                    .HasMaxLength(128)
+                    .HasColumnName("year");
+
+                entity.HasOne(d => d.CountryNavigation)
+                    .WithMany(p => p.ConferenceProceedings)
+                    .HasForeignKey(d => d.Country)
+                    .HasConstraintName("conference_proceedings_country_fkey");
+
+                entity.HasOne(d => d.Publisher)
+                    .WithMany(p => p.ConferenceProceedings)
+                    .HasForeignKey(d => d.Publisherid)
+                    .HasConstraintName("conference_proceedings_publisherid_fkey");
+            });
+
+            modelBuilder.Entity<ConferenceProceedingsAuthor>(entity =>
+            {
+                entity.HasKey(e => new { e.Authorid, e.Conferenceid })
+                    .HasName("conference_proceedings_authors_pkey");
+
+                entity.ToTable("conference_proceedings_authors", "core");
+
+                entity.Property(e => e.Authorid).HasColumnName("authorid");
+
+                entity.Property(e => e.Conferenceid).HasColumnName("conferenceid");
+
+                entity.Property(e => e.MainAuthor).HasColumnName("main_author");
+
+                entity.HasOne(d => d.Author)
+                    .WithMany(p => p.ConferenceProceedingsAuthors)
+                    .HasForeignKey(d => d.Authorid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("conference_proceedings_authors_authorid_fkey");
+
+                entity.HasOne(d => d.Conference)
+                    .WithMany(p => p.ConferenceProceedingsAuthors)
+                    .HasForeignKey(d => d.Conferenceid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("conference_proceedings_authors_conferenceid_fkey");
             });
 
             modelBuilder.Entity<Country>(entity =>
@@ -237,10 +438,88 @@ namespace Citations.Models
 
                 entity.Property(e => e.Countryid).HasColumnName("countryid");
 
+                entity.Property(e => e.Active).HasColumnName("active");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(128)
                     .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.ToTable("department", "core");
+
+                entity.Property(e => e.Departmentid).HasColumnName("departmentid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Faculty>(entity =>
+            {
+                entity.ToTable("faculty", "core");
+
+                entity.Property(e => e.Facultyid).HasColumnName("facultyid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<FacultyInstitution>(entity =>
+            {
+                entity.ToTable("faculty_institution", "core");
+
+                entity.Property(e => e.FacultyInstitutionid).HasColumnName("faculty_institutionid");
+
+                entity.Property(e => e.Facultyid).HasColumnName("facultyid");
+
+                entity.Property(e => e.Institutionid).HasColumnName("institutionid");
+
+                entity.HasOne(d => d.Faculty)
+                    .WithMany(p => p.FacultyInstitutions)
+                    .HasForeignKey(d => d.Facultyid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("faculty_institution_facultyid_fkey");
+
+                entity.HasOne(d => d.Institution)
+                    .WithMany(p => p.FacultyInstitutions)
+                    .HasForeignKey(d => d.Institutionid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("faculty_institution_institutionid_fkey");
+            });
+
+            modelBuilder.Entity<FacultyInstitutionDepartment>(entity =>
+            {
+                entity.ToTable("faculty_institution_department", "core");
+
+                entity.Property(e => e.FacultyInstitutionDepartmentid)
+                    .HasColumnName("faculty_institution_departmentid")
+                    .HasDefaultValueSql("nextval('core.faculty_institution_departmen_faculty_institution_departmen_seq'::regclass)");
+
+                entity.Property(e => e.Departmentid).HasColumnName("departmentid");
+
+                entity.Property(e => e.FacultyInstitutionid).HasColumnName("faculty_institutionid");
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.FacultyInstitutionDepartments)
+                    .HasForeignKey(d => d.Departmentid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("faculty_institution_department_departmentid_fkey");
+
+                entity.HasOne(d => d.FacultyInstitution)
+                    .WithMany(p => p.FacultyInstitutionDepartments)
+                    .HasForeignKey(d => d.FacultyInstitutionid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("faculty_institution_department_faculty_institutionid_fkey");
             });
 
             modelBuilder.Entity<Institution>(entity =>
@@ -257,6 +536,10 @@ namespace Citations.Models
                 entity.Property(e => e.Country).HasColumnName("country");
 
                 entity.Property(e => e.ImpactFactor).HasColumnName("impact_factor");
+
+                entity.Property(e => e.IsPublisher)
+                    .HasColumnName("is_publisher")
+                    .HasDefaultValueSql("false");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -275,11 +558,43 @@ namespace Citations.Models
                     .HasMaxLength(512)
                     .HasColumnName("scanned_logo_image");
 
+                entity.Property(e => e.TypeOfInstitution).HasColumnName("type_of_institution");
+
                 entity.HasOne(d => d.CountryNavigation)
                     .WithMany(p => p.Institutions)
                     .HasForeignKey(d => d.Country)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("institution_country_fkey");
+
+                entity.HasOne(d => d.TypeOfInstitutionNavigation)
+                    .WithMany(p => p.Institutions)
+                    .HasForeignKey(d => d.TypeOfInstitution)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("institution_type_of_institution_fkey");
+            });
+
+            modelBuilder.Entity<IssueOfIssue>(entity =>
+            {
+                entity.ToTable("issue_of_issue", "core");
+
+                entity.Property(e => e.IssueOfIssueid).HasColumnName("issue_of_issueid");
+
+                entity.Property(e => e.DateOfPublication)
+                    .HasColumnType("date")
+                    .HasColumnName("date_of_publication");
+
+                entity.Property(e => e.IssuenumberOfIssue)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("issuenumber_of_issue");
+
+                entity.Property(e => e.MagazineIssueId).HasColumnName("magazine_issue_id");
+
+                entity.HasOne(d => d.MagazineIssue)
+                    .WithMany(p => p.IssueOfIssues)
+                    .HasForeignKey(d => d.MagazineIssueId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("issue_of_issue_magazine_issue_id_fkey");
             });
 
             modelBuilder.Entity<KeyWord>(entity =>
@@ -294,6 +609,10 @@ namespace Citations.Models
                     .IsRequired()
                     .HasMaxLength(128)
                     .HasColumnName("key_word");
+
+                entity.Property(e => e.KeyWordEn)
+                    .HasMaxLength(128)
+                    .HasColumnName("key_word_en");
             });
 
             modelBuilder.Entity<Magazine>(entity =>
@@ -330,11 +649,23 @@ namespace Citations.Models
 
                 entity.Property(e => e.NumberOfCitations).HasColumnName("number_of_citations");
 
+                entity.Property(e => e.Publisherid).HasColumnName("publisherid");
+
+                entity.Property(e => e.WebsiteUrl)
+                    .HasMaxLength(512)
+                    .HasColumnName("website_url");
+
                 entity.HasOne(d => d.Institution)
                     .WithMany(p => p.Magazines)
                     .HasForeignKey(d => d.Institutionid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("magazines_institutionid_fkey");
+
+                entity.HasOne(d => d.Publisher)
+                    .WithMany(p => p.Magazines)
+                    .HasForeignKey(d => d.Publisherid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("magazines_publisherid_fkey");
             });
 
             modelBuilder.Entity<MagazineIssue>(entity =>
@@ -346,27 +677,15 @@ namespace Citations.Models
 
                 entity.Property(e => e.Issueid).HasColumnName("issueid");
 
-                entity.Property(e => e.DateOfPublication)
-                    .HasColumnType("date")
-                    .HasColumnName("date_of_publication");
-
                 entity.Property(e => e.Issuenumber).HasColumnName("issuenumber");
 
                 entity.Property(e => e.Magazineid).HasColumnName("magazineid");
-
-                entity.Property(e => e.Publisherid).HasColumnName("publisherid");
 
                 entity.HasOne(d => d.Magazine)
                     .WithMany(p => p.MagazineIssues)
                     .HasForeignKey(d => d.Magazineid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("magazine_issue_magazineid_fkey");
-
-                entity.HasOne(d => d.Publisher)
-                    .WithMany(p => p.MagazineIssues)
-                    .HasForeignKey(d => d.Publisherid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("magazine_issue_publisherid_fkey");
             });
 
             modelBuilder.Entity<MagazineResearchField>(entity =>
@@ -422,16 +741,30 @@ namespace Citations.Models
 
                 entity.Property(e => e.Country).HasColumnName("country");
 
+                entity.Property(e => e.Institutionid).HasColumnName("institutionid");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(128)
                     .HasColumnName("name");
+
+                entity.Property(e => e.TypeOfPublisher).HasColumnName("type_of_publisher");
 
                 entity.HasOne(d => d.CountryNavigation)
                     .WithMany(p => p.Publishers)
                     .HasForeignKey(d => d.Country)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("publishers_country_fkey");
+
+                entity.HasOne(d => d.Institution)
+                    .WithMany(p => p.Publishers)
+                    .HasForeignKey(d => d.Institutionid)
+                    .HasConstraintName("publishers_institutionid_fkey");
+
+                entity.HasOne(d => d.TypeOfPublisherNavigation)
+                    .WithMany(p => p.Publishers)
+                    .HasForeignKey(d => d.TypeOfPublisher)
+                    .HasConstraintName("publishers_type_of_publisher_fkey");
             });
 
             modelBuilder.Entity<ResearchField>(entity =>
@@ -449,6 +782,61 @@ namespace Citations.Models
                     .IsRequired()
                     .HasMaxLength(128)
                     .HasColumnName("name");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(128)
+                    .HasColumnName("name_en");
+            });
+
+            modelBuilder.Entity<TypeOfInstitution>(entity =>
+            {
+                entity.HasKey(e => e.TypeInstitutionid)
+                    .HasName("type_of_institution_pkey");
+
+                entity.ToTable("type_of_institution", "core");
+
+                entity.Property(e => e.TypeInstitutionid).HasColumnName("type_institutionid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.TypeName)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("type_name");
+            });
+
+            modelBuilder.Entity<TypeOfPublisher>(entity =>
+            {
+                entity.HasKey(e => e.TypePublisherid)
+                    .HasName("type_of_publishers_pkey");
+
+                entity.ToTable("type_of_publishers", "core");
+
+                entity.Property(e => e.TypePublisherid).HasColumnName("type_publisherid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.TypeName)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("type_name");
+            });
+
+            modelBuilder.Entity<TypeOfSource>(entity =>
+            {
+                entity.HasKey(e => e.TypeSourceid)
+                    .HasName("type_of_sources_pkey");
+
+                entity.ToTable("type_of_sources", "core");
+
+                entity.Property(e => e.TypeSourceid).HasColumnName("type_sourceid");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.TypeName)
+                    .IsRequired()
+                    .HasMaxLength(128)
+                    .HasColumnName("type_name");
             });
 
             OnModelCreatingPartial(modelBuilder);

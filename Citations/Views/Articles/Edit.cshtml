@@ -4,56 +4,685 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Article</h4>
+
+<h5>تعديل المقال</h5>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-sm-12">
+        <form enctype="multipart/form-data" asp-action="Edit" id="form_id">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Articleid" />
-            <div class="form-group">
-                <label asp-for="Articletittle" class="control-label"></label>
-                <input asp-for="Articletittle" class="form-control" />
-                <span asp-validation-for="Articletittle" class="text-danger"></span>
+            <input type="hidden" asp-for="Articleid" id="Articleid" />
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <label asp-for="Articletittle" class="control-label"></label>
+                </div>
+                <div class="col-sm-12">
+                    <textarea style="width:80%;" asp-for="Articletittle" id="Articletittle" rows="2"></textarea>
+                </div>
+                <div class="col-sm-12">
+                    <span asp-validation-for="Articletittle" class="text-danger"></span>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <label asp-for="ArticletittleEn" class="control-label"></label>
+                </div>
+                <div class="col-sm-12">
+                    <textarea style="width:80%;" asp-for="ArticletittleEn" id="ArticletittleEn" rows="2"></textarea>
+                </div>
+                <div class="col-sm-12">
+                    <span asp-validation-for="ArticletittleEn" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <label asp-for="BriefQuote" class="control-label"></label>
+                </div>
+                <div class="col-sm-12">
+                    <textarea style="width:80%;" asp-for="BriefQuote" id="BriefQuote" rows="2"></textarea>
+
+                </div>
+                <div class="col-sm-12">
+                    <span asp-validation-for="BriefQuote" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <label asp-for="BriefQuoteEn" class="control-label"></label>
+                </div>
+                <div class="col-sm-12">
+                    <textarea style="width:80%;" asp-for="BriefQuoteEn" id="BriefQuoteEn" rows="2"></textarea>
+
+                </div>
+                <div class="col-sm-12">
+                    <span asp-validation-for="BriefQuoteEn" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row" style="display:none">
+                <div class="col-sm-6">
+                    <label asp-for="NumberOfCitations" class="control-label"></label>
+                    <input asp-for="NumberOfCitations" id="NumberOfCitations" class="form-control" />
+                    <span asp-validation-for="NumberOfCitations" class="text-danger"></span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label asp-for="NumberOfReferences" class="control-label"></label>
+                    <input asp-for="NumberOfReferences" id="NumberOfReferences" class="form-control" />
+                    <span asp-validation-for="NumberOfReferences" class="text-danger"></span>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label asp-for="ScannedArticlePdf" class="control-label"></label>
-                <input asp-for="ScannedArticlePdf" class="form-control" />
+                <input asp-for="ScannedArticlePdf" id="ScannedArticlePdf" type="hidden" />
+
+                @if (Model.ScannedArticlePdf != null)
+                {
+                    <div>
+                        <p>@Model.ScannedArticlePdf</p>
+                        تحميل مقال اخر بدلا من القديم    <input class="form-control btn-primary" id="myfile" type="file" name="articlefile">
+                    </div>
+                }
+                else
+                {
+                    <p>  تحميل المقال </p>
+                    <input type="file" id="myfile" name="articlefile">
+                }
                 <span asp-validation-for="ScannedArticlePdf" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+            <label asp-for="ArticleIssue" class="control-label"></label>
+            <select asp-for="ArticleIssue" class="form-control" asp-items="ViewBag.ArticleIssue"></select>
+            <span asp-validation-for="ArticleIssue" class="text-danger"></span>
+        </div>*@
+        <div class="form-group">
+            الكلمات الداله
+            <select asp-for="KeyWords" asp-items="ViewBag.key" id="multiSelectDropDown" class="form-control" multiple="multiple"></select>
+        </div>
+
             <div class="form-group">
-                <label asp-for="ScannedBriefQuote" class="control-label"></label>
-                <input asp-for="ScannedBriefQuote" class="form-control" />
-                <span asp-validation-for="ScannedBriefQuote" class="text-danger"></span>
+                <label class="control-label">اضافة كلمات داله جديده  </label>
+                <table class="table">
+                    <tr>
+                        <td> الاسم العربي</td>
+                        <td>الاسم الانجليزي</td>
+
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="researchcontainer" id="researchrow">
+                        <td>
+
+
+                            <input type="text" id="newarResarchFields" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="text" id="newenResarchFields" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="button" id="addResarchFields" class="btn btn-outline-success" value="اضافه" />
+                        </td>
+                    </tr>
+                </table>
+
             </div>
-            <div class="form-group">
-                <label asp-for="NumberOfCitations" class="control-label"></label>
-                <input asp-for="NumberOfCitations" class="form-control" />
-                <span asp-validation-for="NumberOfCitations" class="text-danger"></span>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-0" id="researchdetails"></table>
+                <span id="orderItemError" style="color:red"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NumberOfReferences" class="control-label"></label>
-                <input asp-for="NumberOfReferences" class="form-control" />
-                <span asp-validation-for="NumberOfReferences" class="text-danger"></span>
+
+            <hr />
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-0">
+                    <tr>
+                        <th width="25%">المؤسسة</th>
+                        <th width="25%">المجله</th>
+                        <th width="25%">العدد</th>
+                        <th width="25%">اصدار العدد</th>
+                    </tr>
+                    <tr class="mycontainer2" id="mainrow2">
+                        <td style="text-align:center">
+
+                            <select id="productCategory2" style="width:100%;" class="pc2 form-control" asp-items="ViewBag.institution" asp-for="@Model.ArticleIssueNavigation.MagazineIssue.Magazine.Institutionid" onchange="LoadProductx(this)">
+                            </select>
+
+                        </td>
+                        <td style="text-align:center">
+                            <select id="product" style="width:100%;" class="product form-control" onchange="LoadProduct2x(this)">
+                                <option value="@Model.ArticleIssueNavigation.MagazineIssue.Magazineid">@Model.ArticleIssueNavigation.MagazineIssue.Magazine.Name</option>
+                            </select>
+                        </td>
+
+                        <td style="text-align:center">
+                            <select id="product2" style="width:100%;" class="product2 form-control" onchange="LoadProduct3x(this)">
+                                <option value="@Model.ArticleIssueNavigation.MagazineIssue.Issueid">@Model.ArticleIssueNavigation.MagazineIssue.Issuenumber</option>
+                            </select>
+                        </td>
+
+                        <td style="text-align:center">
+                            <select asp-for="ArticleIssue" style="width:100%;" id="product3" class="product3 form-control">
+                                <option value="@Model.ArticleIssueNavigation.IssueOfIssueid">@Model.ArticleIssueNavigation.IssuenumberOfIssue</option>
+                            </select>
+                            <span asp-validation-for="ArticleIssue" class="text-danger"></span>
+                        </td>
+
+
+                    </tr>
+                </table>
+
+
+                @*<select asp-for="ArticleIssue" class="form-control" asp-items="ViewBag.ArticleIssue"></select>*@
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                </label>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label asp-for="Page" class="control-label"></label>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="Page" class="form-control" id="ArticlePage" />
+                </div>
+                <div class="col-sm-12">
+                    <span asp-validation-for="Page" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <hr />
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mb-0">
+                    <tr>
+                        <th>المؤلف</th>
+                        <th>المؤلف الاساسي ؟</th>
+                        <th>اضافه</th>
+                    </tr>
+                    <tr class="mycontainer" id="mainrow">
+                        <td style="text-align:center">
+                            <select id="productCategory" class="pc form-control" style="width:100%" asp-items="ViewBag.Authors"></select>
+
+                        </td>
+                        <td style="text-align:center">
+                            <input type="radio" id="m" name="ma" class="ma">
+                        </td>
+
+                        <td style="text-align:center">
+                            <input type="button" id="add" value="اضافه"  class="btn btn-success" />
+                        </td>
+                    </tr>
+                </table>
             </div>
+            <br />
+            <div class="table-responsive"  style="width:75%">
+                <table class="table table-bordered table-striped mb-0" id="orderdetailsItems">
+                
+                        @foreach (var x in Model.ArticleAuthores)
+                        {
+                            <tr class="mycontainer">
+                                <td style="text-align:center">
+                                    <select style="text-align:center;width:100%;" class="pc rounded" >
+                                        <option style="text-align:center" value="@x.Authorid">@x.Author.Name</option>
+                                    </select>
+                                </td>
+                                <td style="text-align:center">
+                                    <input type="radio" name="ma" class="ma" @(Html.Raw(x.MainAuthor ? "checked=\"checked\"" : ""))>
+                                </td>
+                                <td style="text-align:center">
+                                    <input type="button" value="حذف"  class="remove btn btn-danger" />
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Active" />نشط
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" value="حفظ" onclick="SendAuthors()" class="btn btn-primary" />
+                    </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">الرجوع الي القائمه</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+ function LoadProduct(categoryDD) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Articles/getmagazine",
+            data: { 'Institutionid': $(categoryDD).val() },
+            success: function (data) {
+                //render products to appropriate dropdown
+                renderProduct($(categoryDD).parents('.mycontainer2').find('select.product'), $(categoryDD).parents('.mycontainer2').find('select.product option'), data).then(LoadProduct2($(categoryDD).parents('.mycontainer2').find('select.product')).then(LoadProduct3($(categoryDD).parents('.mycontainer2').find('select.product2'))))
+
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    async function renderProduct(element, ele, data) {
+        //render product
+
+        var $ele = $(element);
+        $.each(data, function (i, val) {
+            if (ex(ele, val.Magazineid) == false) {
+                $ele.append($('<option/>').val(val.Magazineid).text(val.Name));
+            }
+        })
+        return;
+    }
+
+    async function LoadProduct2(categoryDD) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Articles/getissue",
+            data: { 'Magazineid': $(categoryDD).val() },
+            success: function (data) {
+
+                renderProduct2($(categoryDD).parents('.mycontainer2').find('select.product2'), $(categoryDD).parents('.mycontainer2').find('select.product2 option'), data).then(LoadProduct3($(categoryDD).parents('.mycontainer2').find('select.product2')));
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+        return;
+    }
+
+    async function renderProduct2(element, ele, data) {
+        //render product
+        var $ele = $(element);
+
+        $.each(data, function (i, val) {
+
+            if (ex(ele, val.Issueid) == false) {
+
+                $ele.append($('<option/>').val(val.Issueid).text(val.Issuenumber));
+            }
+        })
+        return;
+    }
+
+
+
+    function LoadProduct3(categoryDD) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Articles/getissueversion",
+            data: { 'magazineissueid': $(categoryDD).val() },
+            success: function (data) {
+                //render products to appropriate dropdown
+                renderProduct3($(categoryDD).parents('.mycontainer2').find('select.product3'), $(categoryDD).parents('.mycontainer2').find('select.product3 option'), data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    function renderProduct3(element, ele, data) {
+        //render product
+        var $ele = $(element);
+
+
+        $.each(data, function (i, val) {
+            if (ex(ele, val.IssueOfIssueid) == false) {
+                $ele.append($('<option/>').val(val.IssueOfIssueid).text(val.IssuenumberOfIssue));
+            }
+        })
+    }
+
+    function ex(element, vals) {
+        var exists = false;
+        for (var i = 0, opts = element; i < opts.length; ++i)
+            if (opts[i].value == vals) {
+                exists = true;
+                break;
+            }
+        return exists;
+    }
+
+    function LoadProductx(categoryDD) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Articles/getmagazine",
+            data: { 'Institutionid': $(categoryDD).val() },
+            success: function (data) {
+                //render products to appropriate dropdown
+                renderProductx($(categoryDD).parents('.mycontainer2').find('select.product'), data).then(LoadProduct2x($(categoryDD).parents('.mycontainer2').find('select.product')).then(LoadProduct3x($(categoryDD).parents('.mycontainer2').find('select.product2'))));
+
+
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    async function renderProductx(element, data) {
+        //render product
+        var $ele = $(element);
+        $ele.empty();
+
+        $.each(data, function (i, val) {
+            $ele.append($('<option/>').val(val.Magazineid).text(val.Name));
+        })
+        return;
+    }
+
+
+    //fetch products
+    async function LoadProduct2x(categoryDD) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Articles/getissue",
+            data: { 'Magazineid': $(categoryDD).val() },
+            success: function (data) {
+                //render products to appropriate dropdown
+                renderProduct2x($(categoryDD).parents('.mycontainer2').find('select.product2'), data).then(LoadProduct3x($(categoryDD).parents('.mycontainer2').find('select.product2')));
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+        return;
+    }
+
+    async function renderProduct2x(element, data) {
+        //render product
+        var $ele = $(element);
+        $ele.empty();
+
+        $.each(data, function (i, val) {
+            $ele.append($('<option/>').val(val.Issueid).text(val.Issuenumber));
+        })
+        return;
+    }
+
+
+    function LoadProduct3x(categoryDD) {
+
+        $.ajax({
+            type: "GET",
+            url: "/Articles/getissueversion",
+            data: { 'magazineissueid': $(categoryDD).val() },
+            success: function (data) {
+                //render products to appropriate dropdown
+                renderProduct3x($(categoryDD).parents('.mycontainer2').find('select.product3'), data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+    function renderProduct3x(element, data) {
+        //render product
+        var $ele = $(element);
+        $ele.empty();
+
+        $.each(data, function (i, val) {
+            $ele.append($('<option/>').val(val.IssueOfIssueid).text(val.IssuenumberOfIssue));
+        })
+    }
+
+    function checkForDuplicates(array) {
+        return new Set(array).size !== array.length
+    }
+
+    $(document).ready(function () {
+        $("#multiSelectDropDown").chosen({
+            width: "100%"
+        });
+
+
+
+
+        var yy = $("#productCategory2");
+
+        LoadProduct(yy);
+
+
+
+        $("#productCategory").select2();
+        $("#productCategory2").select2();
+        $("#product").select2();
+        $("#product2").select2();
+        $("#product3").select2();
+
+        //setTimeout(function () {
+        //    var xx = $(".product");
+        //    for (var ii = 0; ii < xx.length; ii++) {
+        //        LoadProduct2(xx[ii]);
+        //    } }, 1000);
+
+
+        $("#add").click(function () {
+            var $newRow = $('#mainrow').clone().removeAttr('id');
+            $('.pc', $newRow).val($('#productCategory').val());
+            if ($('#m').is(':checked')) {
+                $('.ma', $newRow).prop('checked', true);
+            }
+            else {
+                $('.ma', $newRow).prop('checked', false);
+            }
+            var yourArray2 = new Array();
+
+            $('#orderdetailsItems  tr').each(function (index, ele) {
+                yourArray2.push($('.pc', this).val());
+
+            }
+            );
+
+            yourArray2.push($('#productCategory').val());
+
+
+            if (checkForDuplicates(yourArray2) != true) {
+                $('#add', $newRow).addClass('remove').val('حذف').removeClass('btn-success').addClass('btn-danger');
+                $('#productCategory,#m,#add', $newRow).removeAttr('id');
+                $('#orderdetailsItems').append($newRow);
+            }
+
+
+
+        })
+    });
+
+
+        $('#orderdetailsItems').on('click', '.remove', function () {
+            $(this).parents('tr').remove();
+        });
+
+     function SendAuthors()
+     {
+         if ($("#form_id").valid()) {
+
+             var things = [];
+             $('#orderdetailsItems  tr').each(function (index, ele) {
+
+                 var articleauthors = {
+
+                     author: parseInt($('.pc', this).val()),
+                     main: $('.ma', this).is(':checked') ? true : false
+
+                 }
+                 things.push(articleauthors);
+
+             })
+
+
+
+             var data = {
+                 articleauthors1: things
+             }
+
+             $.ajax({
+                 type: 'POST',
+                 contentType: 'application/json; charset=utf-8',
+                 url: "@Url.Action("save", "Articles")",
+                 data: JSON.stringify(data),
+                 success: function (result) {
+                     if (result.success == false) {
+                         alert("Failed!")
+                     }
+                     else {
+                         asd();
+                     }
+
+                 },
+                 error: function () { alert("Something went Wrongerror") }
+             });
+
+         }
+    }
+
+      function asd()
+     {
+
+         var data = new FormData();
+         var files = $("#myfile").get(0).files;
+         data.append("afiles", files[0]);
+
+
+          var yourArray = $("#multiSelectDropDown").val();
+          var str = "" + yourArray + "";
+          var array = str.split(",");
+          //var re = $('.newarResarchFields').map((_, el) => el.value).get();
+
+          //var ek = [];
+          $('.newarResarchFields').each(function () { data.append("newarResarchFields", $(this).val()) });
+
+          $('.newenResarchFields').each(function () { data.append("newenResarchFields", $(this).val()) });
+
+
+          if (array[0] != "") {
+              for (var i = 0; i < array.length; i++) {
+                  data.append("ResarchFields", array[i]);
+              }
+          }
+
+          data.append("Articleid", document.getElementById("Articleid").value);
+         data.append("Articletittle", document.getElementById("Articletittle").value);
+          data.append("ArticletittleEn", document.getElementById("ArticletittleEn").value);
+          data.append("ScannedArticlePdf", document.getElementById("ScannedArticlePdf").value);
+         data.append("BriefQuote", document.getElementById("BriefQuote").value);
+         data.append("BriefQuoteEn", document.getElementById("BriefQuoteEn").value);
+         data.append("NumberOfCitations", document.getElementById("NumberOfCitations").value);
+         data.append("NumberOfReferences", document.getElementById("NumberOfReferences").value);
+         if (document.getElementById("product3").value != 0) {
+             data.append("ArticleIssue", document.getElementById("product3").value);
+         }
+         data.append("Active", document.getElementById("Active").value);
+          data.append("Page", document.getElementById("ArticlePage").value);
+
+                $.ajax({
+                    type: 'POST',
+                    url: "@Url.Action("Edit", "Articles")",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+
+                    success: function (result) {
+                        if (result.success == false) {
+                            alert("Failed!")
+                        }
+                        else
+                        {
+                            window.location.href = '/Articles/Details/' + result.id;
+                        }
+
+                    },
+                        error: function () { alert("Something went Wrongerror")}
+                });
+
+
+    }
+
+    $('#addResarchFields').click(function () {
+        var id = $('#newarResarchFields').val().trim();
+        var ele = document.getElementById(id);
+        if (ele) {
+            alert("Already Exists");
+
+        }
+        else {
+
+            var text = ` <tr class="researchcontainer" id=` + $('#newarResarchFields').val().trim() + `>
+
+                <td width="20%">
+                    <span class="form-group">
+
+                      `            + $('#newarResarchFields').val() + `
+
+                                        <input type="hidden" class="newarResarchFields" name="newarResarchFields" value="`+ $('#newarResarchFields').val().trim() + `" />
+
+                    </span>
+                </td>
+
+                <td class=" form-group" width="25%">
+                    <span class="form-group">
+                        `+ $('#newenResarchFields').val() + `
+                                        <input type="hidden" class="newenResarchFields" name="newenResarchFields" value=" `+ $('#newenResarchFields').val() + `" />
+                    </span>
+                </td>
+
+                <td width="20%">
+                    <input type="button" id="remove" value="حذف" style="width:80px" class="remove btn btn-danger" />
+                </td>
+            </tr>`
+
+                ;
+            if (isEmptyOrSpaces($('#newarResarchFields').val())) {
+
+                $('#newarResarchFields').focus();
+            }
+            //if (isEmptyOrSpaces($('#newenResarchFields').val())) {
+
+            //    $('#newenResarchFields').focus();
+            //}
+
+            if (!isEmptyOrSpaces($('#newarResarchFields').val())) {
+                $('#researchdetails').append(text);
+                $('#newenResarchFields').val('');
+                $('#newarResarchFields').val('');
+            }
+        }
+
+    })
+
+    function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null || str.length == 0;
+    }
+
+    $('#researchdetails').on('click', '.remove', function () {
+        $('#newenResarchFields').val('');
+        $('#newarResarchFields').val('');
+
+        $(this).parents('tr').remove();
+    });
+
+    </script>
 }
